@@ -1,0 +1,81 @@
+html * {
+    margin: 0;
+}
+
+.main {
+    display: block;
+    padding: 0 1em 0;
+    border-right: 1px solid red;
+    border-left: 1px solid red;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+    font-size: 1.4em;
+    background-color: #eee;
+}
+
+h2, h3, h4 {
+    font-family: font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    margin: 1.85em 0 0.5em 0;
+}
+
+p {
+    margin-bottom: 0.5em;
+}
+
+a {
+    font-weight: 700;
+    text-decoration: none;
+    color: #BAA154;
+}
+
+.highlight {
+    color: #5465BA;
+}
+
+.masthead-heading,
+.masthead-intro {
+    text-align: center;
+}
+
+.masthead {
+    padding: 5em 0;
+    border-top: 0.75em solid #f4d36e;
+    background-image: url("http://i.imgur.com/jBy0oof.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+
+.masthead-intro {
+    margin-bottom: -0.5em;
+    font-size: 2em;
+    color: #888;
+    font-family: Georgia;
+    letter-spacing: -0.075ex;
+}
+
+.masthead-heading {
+    margin-bottom: -0.2em;
+    margin-top: -0.3em;
+    font-size: 6em;
+    color: #FFF1C2;
+    font-family: "Open sans", sans-serif;
+    font-weight: 700;
+    text-shadow: 0 4px #E28B6C;
+}
+
+section {
+    max-width: 38%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1em 0;
+    margin-top: 1em;
+}
+
+footer {
+    margin-top: 3em;
+}
