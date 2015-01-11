@@ -48,12 +48,13 @@ a {
     background-size: cover;
     background-repeat: no-repeat;
     text-align: center;
+    background-position: 0% 100%;
 }
 
 .masthead-intro {
     margin-bottom: -0.5em;
     font-size: 2em;
-    color: #888;
+    color: #fff;
     font-family: Georgia;
     letter-spacing: -0.075ex;
 }
