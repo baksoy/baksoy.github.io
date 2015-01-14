@@ -2,38 +2,38 @@ html * {
     margin: 0;
 }
 
-.main {
-    display: block;
-    padding: 0 1em 0;
-    border-right: 1px solid red;
-    border-left: 1px solid red;
-}
-
 body {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
-    font-size: 1.4em;
-    background-color: #eee;
+    font-size: 1.3em;
+  background: rgb(213,210,134); /* Old browsers */
+background: -moz-linear-gradient(top,  rgba(213,210,134,1) 0%, rgba(221,221,221,1) 50%, rgba(238,238,238,1) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(213,210,134,1)), color-stop(50%,rgba(221,221,221,1)), color-stop(100%,rgba(238,238,238,1))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(213,210,134,1) 0%,rgba(221,221,221,1) 50%,rgba(238,238,238,1) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(213,210,134,1) 0%,rgba(221,221,221,1) 50%,rgba(238,238,238,1) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(213,210,134,1) 0%,rgba(221,221,221,1) 50%,rgba(238,238,238,1) 100%); /* IE10+ */
+background: linear-gradient(to bottom,  rgba(213,210,134,1) 0%,rgba(221,221,221,1) 50%,rgba(238,238,238,1) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5d286', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
 }
 
-h2, h3, h4 {
+/*h2, h3, h4 {
     font-family: font-family: 'Open Sans', sans-serif;
     font-weight: 700;
     margin: 1.85em 0 0.5em 0;
-}
+}*/
 
 p {
     margin-bottom: 0.5em;
 }
 
 a {
-    font-weight: 700;
-    text-decoration: none;
-    color: #BAA154;
+  font-weight: 700;
+  text-decoration: none;
+  color: #BAA154;
 }
 
-.highlight {
-    color: #5465BA;
+.highlight{
+  color: #5465BA;
 }
 
 .masthead-heading,
@@ -42,40 +42,76 @@ a {
 }
 
 .masthead {
-    padding: 5em 0;
+    padding: 6em 0;
     border-top: 0.75em solid #f4d36e;
     background-image: url("http://i.imgur.com/jBy0oof.jpg");
     background-size: cover;
     background-repeat: no-repeat;
-    text-align: center;
 }
 
 .masthead-intro {
     margin-bottom: -0.5em;
-    font-size: 2em;
-    color: #888;
-    font-family: Georgia;
+    font-size: 1.85em;
+    color: #EEE;
+    font-family: "Gentium Book Basic", serif;
     letter-spacing: -0.075ex;
+    
 }
 
 .masthead-heading {
     margin-bottom: -0.2em;
-    margin-top: -0.3em;
     font-size: 6em;
     color: #FFF1C2;
-    font-family: "Open sans", sans-serif;
+    font-family: "Open sans", "Helvetica Neue", sans-serif;
     font-weight: 700;
     text-shadow: 0 4px #E28B6C;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
 }
 
-section {
-    max-width: 38%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0 1em 0;
-    margin-top: 1em;
+.introduction-section,
+.location-section,
+.questions-section {
+    max-width: 25em;
+    margin: 2em auto 0;
 }
 
-footer {
-    margin-top: 3em;
+.introduction>p,
+.location>p,
+.content-footer>p{
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+.questions-section>h2{
+  font-family: "Gentium Book Basic", Georgia, serif;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.content-footer {
+  background-color: #8C7E65;
+  height: 12em;
+  text-align: center;
+  margin: 3em auto 0;
+  color: #ccc;
+  padding-top: 3em;
+  font-size: 0.85em;
+}
+
+.content-footer ul li{
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.content-footer ul li a {
+ color: #f4d36e;
+ font-size: 0.9em;
+ font-weight: 700;
+}
+
+.copyright{
+  font-size: 0.75em;
+  font-weight: 100;
 }
