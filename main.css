@@ -16,12 +16,6 @@ background: linear-gradient(to bottom,  rgba(213,210,134,1) 0%,rgba(221,221,221,
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d5d286', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
 }
 
-/*h2, h3, h4 {
-    font-family: font-family: 'Open Sans', sans-serif;
-    font-weight: 700;
-    margin: 1.85em 0 0.5em 0;
-}*/
-
 p {
     margin-bottom: 0.5em;
 }
@@ -163,4 +157,24 @@ a {
 .copyright{
   font-size: 0.75em;
   font-weight: 100;
+}
+
+@media only screen and (max-width: 500px) {
+    .masthead {
+        padding: 3em 0;
+    }
+    .masthead-heading {
+        font-size: 3em;
+    }
+    .content-footer {
+        padding: 4em;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .introduction-section,
+    .location-section,
+    .questions-section {
+        max-width: 90%;
+    }
 }
