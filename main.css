@@ -67,6 +67,7 @@ a {
     text-shadow: 0 4px #E28B6C;
     letter-spacing: -0.03em;
     text-transform: uppercase;
+<<<<<<< HEAD
 }
 
 .introduction-section,
@@ -115,3 +116,53 @@ a {
   font-size: 0.75em;
   font-weight: 100;
 }
+=======
+}
+
+.introduction-section,
+.location-section,
+.questions-section {
+    max-width: 25em;
+    margin: 2em auto 0;
+}
+
+.introduction>p,
+.location>p,
+.content-footer>p{
+    font-weight: 300;
+    letter-spacing: 0.05em;
+}
+
+.questions-section>h2{
+  font-family: "Gentium Book Basic", Georgia, serif;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.content-footer {
+  background-color: #8C7E65;
+  height: 12em;
+  text-align: center;
+  margin: 3em auto 0;
+  color: #ccc;
+  padding-top: 3em;
+  font-size: 0.85em;
+}
+
+.content-footer ul li{
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 1em;
+}
+
+.content-footer ul li a {
+ color: #f4d36e;
+ font-size: 0.9em;
+ font-weight: 700;
+}
+
+.copyright{
+  font-size: 0.75em;
+  font-weight: 100;
+}
+>>>>>>> 5a8bc68f2d7588a9193099dba1780c4c8b456184
