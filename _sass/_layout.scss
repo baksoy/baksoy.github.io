@@ -92,8 +92,7 @@
 /* Individual Posts
  * ============================================== */
     .page-content {
-        padding: $spacing-unit 0;
-        text-align: justify;
+        padding: 0 0;
     }
 
     .page-heading {
@@ -139,6 +138,7 @@
  * ============================================== */
     .post-header {
         margin-bottom: $spacing-unit;
+        padding-left: 20px;
     }
 
     .post-title {
@@ -151,6 +151,9 @@
         /* margin-bottom: $spacing-unit; */
         margin-bottom: 20px;
         background-color: rgba(221, 221, 221, 0.14);
-        padding: 50px;
-        border-radius: 6px;
+        border-radius: 3px;
+        padding: 15px 30px 15px 35px;
+        -moz-box-shadow:    0 4px 10px -1px #aaa;
+        -webkit-box-shadow: 0 4px 10px -1px #aaa;
+        box-shadow:         0 4px 10px -1px #aaa;
     }
