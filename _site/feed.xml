@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Programming Concepts</title>
+    <description>Jekyll Theme Demo
+</description>
+    <link>http://baksoy.github.io/baxoy-theme/</link>
+    <atom:link href="http://baksoy.github.io/baxoy-theme/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 08 Nov 2015 22:40:43 -0500</pubDate>
+    <lastBuildDate>Sun, 08 Nov 2015 22:40:43 -0500</lastBuildDate>
+    <generator>Jekyll v3.0.0</generator>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your  &lt;code&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Nov 2015 09:34:52 -0500</pubDate>
+        <link>http://baksoy.github.io/baxoy-theme/jekyll/update/2015/11/07/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/jekyll/update/2015/11/07/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>How Web Applications Work</title>
+        <description>&lt;h2&gt;Http Protocol is a Request and Response protocol&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Client establishes connection with web server.&lt;/li&gt;
+&lt;li&gt;Client sends web server a &lt;strong&gt;Request&lt;/strong&gt;. This request has details of what operations the client wants.&lt;/li&gt;
+&lt;li&gt;Web Server responds with a &lt;strong&gt;Response&lt;/strong&gt; back to the web client. Content of the response has what was requested and status.&lt;/li&gt;
+&lt;li&gt;Connection closes. Web server doesn’t remember anything about the past connections and who the clients were. That means another request coming from the same client is treated as a new request coming from a new client. Because of this, &lt;strong&gt;HTTP&lt;/strong&gt; protocol is called a stateless protocol. &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This one pair of Http Request and Response is called an Http Transaction.&lt;/p&gt;
+
+&lt;h2&gt;URL&lt;/h2&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddHandler&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpServlet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;   
+        &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt; 
+        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;doGet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpServletRequest&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpServletResponse&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getParameter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getParameter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;y&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setContentType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/html&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//set content type&lt;/span&gt;
+
+            &lt;span class=&quot;n&quot;&gt;PrintWriter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPrintWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;!doctype html&amp;gt;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;html&amp;gt;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; 
+                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Sum of two numbers &amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;\n &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;body&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                        &lt;span class=&quot;s&quot;&gt;&quot;Sum of x and y is &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
+                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;request.getParameter()&lt;/code&gt;&lt;/strong&gt; searches for parameters not only in the query string of the URL but also in the body of the request. That means you can also read the form input fields in the post request which travel in the body of the request. Besides getting the parameters, the request object can be used for getting any other request data, for example the headers, cookies, session, method, etc.&lt;/p&gt;
+
+&lt;p&gt;We send a response to the client using the response helper object after setting the content type with the &lt;strong&gt;response.setContentType()&lt;/strong&gt; method. Then, we instantiate a writer object PrintWriter to write to the response body. Then with &lt;strong&gt;out.println()&lt;/strong&gt; method we send back to the client our response data. Note that the data goes straight to the client and is not held in the response object. Response is just a helper object and is not an intermediary space to store the data. After the &lt;strong&gt;doGet()&lt;/strong&gt; method finishes executing, the container closes the connection with the client. &lt;/p&gt;
+
+&lt;p&gt;In practice, you can do whatever you want in this &lt;strong&gt;doGet()&lt;/strong&gt; method and are not limited to what&amp;#39;s shown above. In this &lt;strong&gt;doGet()&lt;/strong&gt; space you can:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;access a database&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;access other components like &lt;em&gt;EJBs&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;connect to other servers&lt;/li&gt;
+&lt;li&gt;or whatever you can imagine under the sun&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 06 Nov 2015 09:34:52 -0500</pubDate>
+        <link>http://baksoy.github.io/baxoy-theme/java/update/2015/11/06/java-notes-2.html</link>
+        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/java/update/2015/11/06/java-notes-2.html</guid>
+        
+        
+        <category>java</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>Hello, User!</title>
+        <description>&lt;p&gt;Hi, thanks for viewing my theme! Feel free to edit it in any way you want, just be cool and leave the necessary credits somewhere visible. If you could star the repository, that&amp;#39;d be pretty cool as well.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;#39;s a list of things you should probably do after installing this theme:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Edit &lt;code&gt;_config.yml&lt;/code&gt; with your actual information. Classic Jekyll.&lt;/li&gt;
+&lt;li&gt;Edit &lt;code&gt;about.md&lt;/code&gt; with your actual information&lt;/li&gt;
+&lt;li&gt;Go to &lt;code&gt;css/main.scss&lt;/code&gt; and edit &lt;code&gt;brand-color&lt;/code&gt; to any color you want to change the header color! If you want to use an image instead, check out &lt;code&gt;_sass/_layout.scss&lt;/code&gt; and edit line 6. &lt;/li&gt;
+&lt;li&gt;Delete these icky filler posts.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 25 May 2015 00:00:00 -0400</pubDate>
+        <link>http://baksoy.github.io/baxoy-theme/2015/05/25/hello.html</link>
+        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/2015/05/25/hello.html</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Formatting Samples</title>
+        <description>&lt;p&gt;Arctic Fox supports GFM!
+The following text has been taken from &lt;a href=&quot;https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet&quot;&gt;this page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h1&gt;H1&lt;/h1&gt;
+
+&lt;h2&gt;H2&lt;/h2&gt;
+
+&lt;h3&gt;H3&lt;/h3&gt;
+
+&lt;h4&gt;H4&lt;/h4&gt;
+
+&lt;h5&gt;H5&lt;/h5&gt;
+
+&lt;h6&gt;H6&lt;/h6&gt;
+
+&lt;p&gt;Emphasis, aka italics, with &lt;em&gt;asterisks&lt;/em&gt; or &lt;em&gt;underscores&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Strong emphasis, aka bold, with &lt;strong&gt;asterisks&lt;/strong&gt; or &lt;strong&gt;underscores&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Combined emphasis with &lt;strong&gt;asterisks and &lt;em&gt;underscores&lt;/em&gt;&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Strikethrough uses two tildes. &lt;del&gt;Scratch this.&lt;/del&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;First ordered list item&lt;/li&gt;
+&lt;li&gt;Another item
+
+&lt;ul&gt;
+&lt;li&gt;Unordered sub-list. &lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Actual numbers don&amp;#39;t matter, just that it&amp;#39;s a number
+
+&lt;ol&gt;
+&lt;li&gt;Ordered sub-list&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;And another item.&lt;br&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Some text that should be aligned with the above item.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Unordered list can use asterisks&lt;/li&gt;
+&lt;li&gt;Or minuses&lt;/li&gt;
+&lt;li&gt;Or pluses&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com&quot;&gt;I&amp;#39;m an inline-style link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.mozilla.org&quot;&gt;I&amp;#39;m a reference-style link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://slashdot.org&quot;&gt;You can use numbers for reference-style link definitions&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Or leave it empty and use the &lt;a href=&quot;http://www.reddit.com&quot;&gt;link text itself&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Some text to show that the reference links can follow later.&lt;/p&gt;
+
+&lt;p&gt;Inline &lt;code&gt;code&lt;/code&gt; has &lt;code&gt;back-ticks around&lt;/code&gt; it.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;JavaScript syntax highlighting&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;s&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;n&quot;&gt;s&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;Python syntax highlighting&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;s&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;No language indicated, so no syntax highlighting. 
+But let&#39;s throw in a &amp;lt;b&amp;gt;tag&amp;lt;/b&amp;gt;.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Colons can be used to align columns.&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Tables&lt;/th&gt;
+&lt;th style=&quot;text-align: center&quot;&gt;Are&lt;/th&gt;
+&lt;th style=&quot;text-align: right&quot;&gt;Cool&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;col 3 is&lt;/td&gt;
+&lt;td style=&quot;text-align: center&quot;&gt;right-aligned&lt;/td&gt;
+&lt;td style=&quot;text-align: right&quot;&gt;$1600&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;col 2 is&lt;/td&gt;
+&lt;td style=&quot;text-align: center&quot;&gt;centered&lt;/td&gt;
+&lt;td style=&quot;text-align: right&quot;&gt;$12&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;zebra stripes&lt;/td&gt;
+&lt;td style=&quot;text-align: center&quot;&gt;are neat&lt;/td&gt;
+&lt;td style=&quot;text-align: right&quot;&gt;$1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;The outer pipes (|) are optional, and you don&amp;#39;t need to make the raw Markdown line up prettily. You can also use inline Markdown.&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Markdown&lt;/th&gt;
+&lt;th&gt;Less&lt;/th&gt;
+&lt;th&gt;Pretty&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;Still&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;renders&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;nicely&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Blockquotes are very handy in email to emulate reply text.
+This line is part of the same quote.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Quote break.&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;This is a very long line that will still be quoted properly when it wraps. Oh boy let&amp;#39;s keep writing to make sure this is long enough to actually wrap for everyone. Oh, you can &lt;em&gt;put&lt;/em&gt; &lt;strong&gt;Markdown&lt;/strong&gt; into a blockquote. &lt;/p&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Mon, 25 May 2015 00:00:00 -0400</pubDate>
+        <link>http://baksoy.github.io/baxoy-theme/2015/05/25/formatting-samples.html</link>
+        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/2015/05/25/formatting-samples.html</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>

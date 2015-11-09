@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>How Web Applications Work</title>
+  <meta name="description" content="Http Protocol is a Request and Response protocolClient establishes connection with web server.Client sends web server a Request. This request has details of ...">
+
+  <link rel="stylesheet" href="/baxoy-theme/css/main.css">
+  <link rel="canonical" href="http://baksoy.github.io/baxoy-theme/java/update/2015/11/06/java-notes-2.html">
+  <link rel="alternate" type="application/rss+xml" title="Programming Concepts" href="http://baksoy.github.io/baxoy-theme/feed.xml" />
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,700' rel='stylesheet' type='text/css'>
+
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+</head>
+
+
+  <body>
+
+    <div class="site-header">
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <i class="fa fa-navicon fa-lg"></i>
+      </a>
+
+      <div class="trigger">
+          <a class="page-link" href="/baxoy-theme/">Home</a>
+        
+          
+          <a class="page-link" href="/baxoy-theme/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+
+</div>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <div class="post">
+
+  <header class="post-header">
+     <h1 class="post-title">How Web Applications Work</h1>
+     <p class="post-meta">Posted on Nov 6, 2015</p>
+  </header>
+
+  <article class="post-content">
+    <h2>Http Protocol is a Request and Response protocol</h2>
+
+<ul>
+<li>Client establishes connection with web server.</li>
+<li>Client sends web server a <strong>Request</strong>. This request has details of what operations the client wants.</li>
+<li>Web Server responds with a <strong>Response</strong> back to the web client. Content of the response has what was requested and status.</li>
+<li>Connection closes. Web server doesn’t remember anything about the past connections and who the clients were. That means another request coming from the same client is treated as a new request coming from a new client. Because of this, <strong>HTTP</strong> protocol is called a stateless protocol. </li>
+</ul>
+
+<p>This one pair of Http Request and Response is called an Http Transaction.</p>
+
+<h2>URL</h2>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AddHandler</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>   
+        <span class="nd">@Override</span> 
+        <span class="kd">public</span> <span class="kt">void</span> <span class="n">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">){</span>
+            <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">"x"</span><span class="o">));</span>
+            <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">"y"</span><span class="o">));</span>
+
+            <span class="n">response</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"text/html"</span><span class="o">);</span> <span class="c1">//set content type</span>
+
+            <span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getPrintWriter</span><span class="o">();</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"&lt;!doctype html&gt;\n"</span> <span class="o">+</span>
+                        <span class="s">"&lt;html&gt;\n"</span> <span class="o">+</span> 
+                        <span class="s">"&lt;head&gt;&lt;title&gt;Sum of two numbers &lt;/title&gt;&lt;/head&gt;\n "</span> <span class="o">+</span>
+                        <span class="s">"&lt;body&gt;"</span> <span class="o">+</span>
+                        <span class="s">"Sum of x and y is "</span> <span class="o">+</span> <span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span> <span class="o">+</span>
+                        <span class="s">"&lt;/body&gt;&lt;/html&gt;"</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></div>
+<p><strong><code>request.getParameter()</code></strong> searches for parameters not only in the query string of the URL but also in the body of the request. That means you can also read the form input fields in the post request which travel in the body of the request. Besides getting the parameters, the request object can be used for getting any other request data, for example the headers, cookies, session, method, etc.</p>
+
+<p>We send a response to the client using the response helper object after setting the content type with the <strong>response.setContentType()</strong> method. Then, we instantiate a writer object PrintWriter to write to the response body. Then with <strong>out.println()</strong> method we send back to the client our response data. Note that the data goes straight to the client and is not held in the response object. Response is just a helper object and is not an intermediary space to store the data. After the <strong>doGet()</strong> method finishes executing, the container closes the connection with the client. </p>
+
+<p>In practice, you can do whatever you want in this <strong>doGet()</strong> method and are not limited to what&#39;s shown above. In this <strong>doGet()</strong> space you can:</p>
+
+<ul>
+<li>access a database<br></li>
+<li>access other components like <em>EJBs</em></li>
+<li>connect to other servers</li>
+<li>or whatever you can imagine under the sun</li>
+</ul>
+
+  </article>
+
+  <div align="center">
+  	<a href="#">
+  	<i class="fa fa-arrow-circle-up fa-2x"></i>
+  	</a>
+  </div>
+
+</div>
+      </div>
+    </div>
+
+    <div class="footer" align="center">
+
+  Copyright &copy; <a href=http://baksoy.github.io target="_blank">Bera Aksoy</a> 2015<BR />
+
+</div>
+
+
+  </body>
+</html>
