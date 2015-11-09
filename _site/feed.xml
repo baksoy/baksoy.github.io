@@ -4,10 +4,10 @@
     <title>Programming Concepts</title>
     <description>Jekyll Theme Demo
 </description>
-    <link>http://baksoy.github.io/baxoy-theme/</link>
-    <atom:link href="http://baksoy.github.io/baxoy-theme/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 08 Nov 2015 22:40:43 -0500</pubDate>
-    <lastBuildDate>Sun, 08 Nov 2015 22:40:43 -0500</lastBuildDate>
+    <link>/http://baksoy.github.io/</link>
+    <atom:link href="/http://baksoy.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 09 Nov 2015 00:16:21 -0500</pubDate>
+    <lastBuildDate>Mon, 09 Nov 2015 00:16:21 -0500</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
     
       <item>
@@ -27,8 +27,8 @@
 &lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sat, 07 Nov 2015 09:34:52 -0500</pubDate>
-        <link>http://baksoy.github.io/baxoy-theme/jekyll/update/2015/11/07/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/jekyll/update/2015/11/07/welcome-to-jekyll.html</guid>
+        <link>/http://baksoy.github.io/jekyll/update/2015/11/07/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">/http://baksoy.github.io/jekyll/update/2015/11/07/welcome-to-jekyll.html</guid>
         
         
         <category>jekyll</category>
@@ -83,8 +83,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Fri, 06 Nov 2015 09:34:52 -0500</pubDate>
-        <link>http://baksoy.github.io/baxoy-theme/java/update/2015/11/06/java-notes-2.html</link>
-        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/java/update/2015/11/06/java-notes-2.html</guid>
+        <link>/http://baksoy.github.io/java/update/2015/11/06/java-notes-2.html</link>
+        <guid isPermaLink="true">/http://baksoy.github.io/java/update/2015/11/06/java-notes-2.html</guid>
         
         
         <category>java</category>
@@ -107,8 +107,8 @@
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 25 May 2015 00:00:00 -0400</pubDate>
-        <link>http://baksoy.github.io/baxoy-theme/2015/05/25/hello.html</link>
-        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/2015/05/25/hello.html</guid>
+        <link>/http://baksoy.github.io/2015/05/25/hello.html</link>
+        <guid isPermaLink="true">/http://baksoy.github.io/2015/05/25/hello.html</guid>
         
         
       </item>
@@ -238,8 +238,8 @@ This line is part of the same quote.&lt;/p&gt;
 &lt;/blockquote&gt;
 </description>
         <pubDate>Mon, 25 May 2015 00:00:00 -0400</pubDate>
-        <link>http://baksoy.github.io/baxoy-theme/2015/05/25/formatting-samples.html</link>
-        <guid isPermaLink="true">http://baksoy.github.io/baxoy-theme/2015/05/25/formatting-samples.html</guid>
+        <link>/http://baksoy.github.io/2015/05/25/formatting-samples.html</link>
+        <guid isPermaLink="true">/http://baksoy.github.io/2015/05/25/formatting-samples.html</guid>
         
         
       </item>

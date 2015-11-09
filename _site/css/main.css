@@ -97,7 +97,7 @@ blockquote {
 pre,
 code {
   font-size: 15px;
-  border: 1px solid #cecece;
+  border: 1px solid #cfcfcf;
   font-family: Menlo, Monaco, "Andale Mono", serif; }
 
 code {
@@ -192,7 +192,7 @@ table code {
       top: 3px;
       right: 3px;
       background-color: rgba(238, 238, 238, 0.2);
-      border: 1px solid #cecece;
+      border: 1px solid #cfcfcf;
       border-radius: 5px;
       text-align: right; }
       .site-nav .menu-icon {
@@ -270,7 +270,7 @@ table code {
 
 .post-meta {
   font-size: 18.795px;
-  color: #cecece;
+  color: #cfcfcf;
   text-transform: uppercase;
   display: inline-block; }
 
