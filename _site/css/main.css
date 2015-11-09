@@ -285,7 +285,11 @@ table code {
   line-height: 1; }
 
 .post-content {
-  margin-bottom: 20px; }
+  /* margin-bottom: $spacing-unit; */
+  margin-bottom: 20px;
+  background-color: rgba(221, 221, 221, 0.14);
+  padding: 50px;
+  border-radius: 6px; }
 
 /* Syntax Highlighting
  * ============================================== */

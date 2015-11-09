@@ -148,5 +148,9 @@
     }
 
     .post-content {
-        margin-bottom: $spacing-unit;
+        /* margin-bottom: $spacing-unit; */
+        margin-bottom: 20px;
+        background-color: rgba(221, 221, 221, 0.14);
+        padding: 50px;
+        border-radius: 6px;
     }
