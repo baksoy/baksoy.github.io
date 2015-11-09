@@ -136,6 +136,12 @@
 
 /* Post Format
  * ============================================== */
+    .post{
+        padding: 20px;
+        padding-left: 20px;
+        text-align: left;
+    }
+    
     .post-header {
         margin-bottom: $spacing-unit;
         padding-left: 20px;
