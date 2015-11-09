@@ -104,13 +104,14 @@
     pre,
     code {
         font-size: 15px;
-        border: 1px solid $grey-color-light;
+        border: 3px solid rgba(243, 116, 116, 0.05);
         font-family: Menlo, Monaco, "Andale Mono", serif;
+        background-color: #FDFAFA;
     }
 
     code {
         padding: 1px 3px;
-        background-color: rgba(119, 90, 100, 0.12) ;
+        /*background-color: rgba(119, 90, 100, 0.12) ;*/
         border-radius: 5px;
 
     }
@@ -119,11 +120,11 @@
         border-radius: 3px;
         padding: 8px 12px;
         overflow-x: scroll;
-        background-color: #F5F5F5;
+        /*background-color: #F5F5F5;*/
         color: #777;
 
         > code {
-            background-color: #F5F5F5;
+            /*background-color: #F5F5F5;*/
             border: 0;
             padding-right: 0;
             padding-left: 0;
