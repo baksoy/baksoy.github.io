@@ -25,7 +25,7 @@ $grey-color-dark:  darken($grey-color, 25%);
 $content-width:    800px;
 $on-palm:          700px;
 $on-laptop:        700px;
-
+$break-small:	   500px;
 
 
 // Using media queries with like this:
@@ -47,3 +47,7 @@ $on-laptop:        700px;
         "layout",
         "syntax-highlighting"
 ;
+
+
+
+

@@ -20,6 +20,8 @@
         text-align: center;
     }
 
+
+
 /* Set Margin Bottom for Vertical Rhythm
  * ============================================== */
     h1, h2, h3, h4, h5, h6,
@@ -63,10 +65,14 @@
         font-weight: bold;
         margin-bottom: 0px;
         letter-spacing: -1.2px;
+
+        @media screen and (max-width: $break-small){
+            font-size: 1em !important;
+        }
     }
 
-    h1 {font-size: 1.9em !important;}
-    h2, {font-size: 1.5em !important;}
+    h1 {font-size: 1.9em;}
+    h2 {font-size: 1.5em;}
     h3 {font-size: 1.3em;}
     h4 {font-size: 1em;}
     h5 {font-size: .9em;}
@@ -140,6 +146,8 @@
         max-width:         calc(#{$content-width} - (#{$spacing-unit} * 2));
         margin-right: auto;
         margin-left: auto;
+        padding-right: $spacing-unit;
+        padding-left: $spacing-unit;
         @extend %clearfix;
 
         @include media-query($on-laptop) {

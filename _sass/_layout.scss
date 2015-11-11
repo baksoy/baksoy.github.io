@@ -20,14 +20,16 @@
             display: none;
         }
 
-        @include media-query($on-palm) {
+        @include media-query($break-small) {
             position: absolute;
             top: 3px;
-            right: 3px;
-            background-color: $background-color;
-            border: 1px solid $grey-color-light;
+            right: 0px;
+            /*background-color: $background-color;*/
+            /*border: 1px solid rgba(243, 111, 111, 0.06);*/
             border-radius: 5px;
             text-align: right;
+            font-size: 0.6em;
+            margin-right: 10px;
 
             .menu-icon {
                 display: block;
@@ -93,6 +95,8 @@
  * ============================================== */
     .page-content {
         padding: 0 0;
+        /* text-align: justify; */
+        text-align: left;
     }
 
     .page-heading {
@@ -113,6 +117,8 @@
 
     }
 
+
+
     .post-link {
         font-family: Lato, 'Open Sans';
         font-weight: 300;
@@ -120,10 +126,12 @@
         letter-spacing: -1px;
         color: #666;
         display: block;
-        width: 100%;
+        width: 85%;
+       
 
-        @include media-query($on-palm) {
-            font-size: 1.33em;
+        @include media-query($break-small) {
+            font-size: 1em;
+
         }
     }
 
@@ -132,6 +140,10 @@
         color: $grey-color-light;
         text-transform: uppercase;
         display: inline-block;
+
+        @media screen and (max-width: $break-small){
+            font-size: 0.8em;
+        }
     }
 
 /* Post Format
@@ -140,17 +152,35 @@
         padding: 20px;
         padding-left: 20px;
         text-align: left;
+
+        @media screen and (max-width: $break-small){
+            text-align: left;
+            margin-left: 10px;
+            padding-left: 0px;
+
+        }
     }
-    
+
     .post-header {
         margin-bottom: $spacing-unit;
         padding-left: 20px;
+
+        @media screen and (max-width: $break-small){
+            margin-bottom: 0px;
+            padding-left: 0px;        
+        }
     }
 
     .post-title {
         font-size: 42px;
         letter-spacing: -1px;
         line-height: 1;
+        
+        @media screen and (max-width: $break-small){
+            font-size: 1.1em !important;           
+            margin: 0px !important;
+            padding: 0px !important;
+        }
     }
 
     .post-content {
@@ -162,4 +192,17 @@
         -moz-box-shadow:    0 4px 10px -1px #aaa;
         -webkit-box-shadow: 0 4px 10px -1px #aaa;
         box-shadow:         0 4px 10px -1px #aaa;
+
+        @media screen and (max-width: $break-small) {
+             padding: 0px;
+             -moz-box-shadow:   none;
+             -webkit-box-shadow: none;
+             box-shadow: none;
+             background-color: inherit;
+             margin-bottom: 0px;
+             font-size: 18px;
+             line-height: 1.6;
+        }
     }
+
+
