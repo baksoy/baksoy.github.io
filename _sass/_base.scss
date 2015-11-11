@@ -18,6 +18,10 @@
         background-color: $background-color !important;
         -webkit-text-size-adjust: 100%;
         text-align: center;
+
+        @media screen and (max-width: $break-small){
+            color: $small-text-color;
+        }
     }
 
 
