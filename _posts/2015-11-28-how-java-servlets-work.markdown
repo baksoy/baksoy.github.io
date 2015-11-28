@@ -108,3 +108,20 @@ Some Common Features of Application Servers:
 * Caching and object pooling* (to prevent high consumption of system resources like memory) 
 
  *An object pool helps an application avoid creating new Java objects repeatedly. Most objects can be created once, used and then reused. An object pool supports the pooling of objects waiting to be reused. (source: ibm)
+ 
+### Some topics to learn next
+
+* How to configure your Web Application
+* How to hook your routines when Servlets get initialized
+* How to hook your routines to global events in your application, which are called Listeners
+* How to maintain sessions. Remember HTTP is stateless but there are ways to remember the client using Sessions and Cookies. 
+* How to code cross-cutting concerns using chain of Filters. You can have routines called Filters intercepting your Http transitions and they are used for coding cross-cutting concerns, eg. login 
+* Security, or how to have authentication and authorization in your application
+How to use multiple servlets together using include and forward for architecting your application well.
+* Java Server Pages is a templating language which compile to servlets.
+MVC Model - understand how servlets do the processing of the requests and forward them to JSP's for UI rendering.
+
+If you want to jumpstart building web applications without going through a Servlets course, just learn some JSP, JSTL, EL and jump to a framework like the Spring or Play framework. Then you can learn about key concepts in servlets such as filters, security, etc.  
+With the introduction of Spring 4 and Spring Boot, Spring Framework got very simplified. 
+
+(source: https://www.udemy.com/web-application-and-java-servlet-concepts)
