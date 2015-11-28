@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>How Web Applications Work</title>
-  <meta name="description" content="Http Protocol is a Request and Response protocolClient establishes connection with web server.Client sends web server a Request. This request has details of ...">
+  <meta name="description" content="1 - HTTPHTTP Protocol is a Request and Response protocol and the communication between a web application client such as a web browser and a web application s...">
 
   <link rel="stylesheet" href="/css/main.css">
   <link rel="canonical" href="//java/update/2015/11/06/how-webapps-work.html">
@@ -61,48 +61,37 @@
   </header>
 
   <article class="post-content">
-    <h2>Http Protocol is a Request and Response protocol</h2>
+    <h2>1 - HTTP</h2>
+
+<p><strong>HTTP Protocol</strong> is a <strong>Request</strong> and <strong>Response</strong> protocol and the communication between a web application client such as a web browser and a web application such as Apache Tomcat server works as follows:  </p>
 
 <ul>
-<li>Client establishes connection with web server.</li>
-<li>Client sends web server a <strong>Request</strong>. This request has details of what operations the client wants.</li>
-<li>Web Server responds with a <strong>Response</strong> back to the web client. Content of the response has what was requested and status.</li>
-<li>Connection closes. Web server doesn’t remember anything about the past connections and who the clients were. That means another request coming from the same client is treated as a new request coming from a new client. Because of this, <strong>HTTP</strong> protocol is called a stateless protocol. </li>
+<li>The client first establishes a connection with the server.</li>
+<li>After the connection is established, the client sends the web server a <strong>Request</strong>. This request has details of what operations the client wants.</li>
+<li>The web Server responds with a <strong>Response</strong> back to the web client. Content of the response has what was requested and <strong>status</strong>.</li>
+<li>Finally, the connection gets closed. It&#39;s important to note that the web server doesn’t remember anything about the past connections and who the clients were. This means that another request coming from the same client is treated as a new request coming from a new client. Because of this, the <strong>HTTP</strong> protocol is called a <strong>stateless protocol</strong>. </li>
 </ul>
 
-<p>This one pair of Http Request and Response is called an Http Transaction.</p>
+<p>This one pair of HTTP Request and Response is called an <strong>HTTP Transaction</strong>.</p>
 
-<h2>URL</h2>
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">AddHandler</span> <span class="kd">extends</span> <span class="n">HttpServlet</span> <span class="o">{</span>   
-        <span class="nd">@Override</span> 
-        <span class="kd">public</span> <span class="kt">void</span> <span class="n">doGet</span><span class="o">(</span><span class="n">HttpServletRequest</span> <span class="n">request</span><span class="o">,</span> <span class="n">HttpServletResponse</span> <span class="n">response</span><span class="o">){</span>
-            <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">"x"</span><span class="o">));</span>
-            <span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Integer</span><span class="o">.</span><span class="na">parseInt</span><span class="o">(</span><span class="n">request</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">"y"</span><span class="o">));</span>
+<h2>2 - URL</h2>
 
-            <span class="n">response</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="s">"text/html"</span><span class="o">);</span> <span class="c1">//set content type</span>
-
-            <span class="n">PrintWriter</span> <span class="n">out</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="na">getPrintWriter</span><span class="o">();</span>
-            <span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"&lt;!doctype html&gt;\n"</span> <span class="o">+</span>
-                        <span class="s">"&lt;html&gt;\n"</span> <span class="o">+</span> 
-                        <span class="s">"&lt;head&gt;&lt;title&gt;Sum of two numbers &lt;/title&gt;&lt;/head&gt;\n "</span> <span class="o">+</span>
-                        <span class="s">"&lt;body&gt;"</span> <span class="o">+</span>
-                        <span class="s">"Sum of x and y is "</span> <span class="o">+</span> <span class="o">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="o">)</span> <span class="o">+</span>
-                        <span class="s">"&lt;/body&gt;&lt;/html&gt;"</span><span class="o">);</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
+<p>Let&#39;s disect the following example URL to understand the pieces:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">http://www.example.com:8080/2015/10/15/up-and-running.html
 </code></pre></div>
-<p><strong><code>request.getParameter()</code></strong> searches for parameters not only in the query string of the URL but also in the body of the request. That means you can also read the form input fields in the post request which travel in the body of the request. Besides getting the parameters, the request object can be used for getting any other request data, for example the headers, cookies, session, method, etc.</p>
+<p><code>http</code> - this is the <strong>scheme</strong> of the above URL. Some other popular schemes are <em>ftp</em>, <em>mailto</em>, <em>file</em>, <em>data</em>. Schemes indicate how to access the resource that follows, in this case it indicates to access the resource via the http protocol.</p>
 
-<p>We send a response to the client using the response helper object after setting the content type with the <strong>response.setContentType()</strong> method. Then, we instantiate a writer object PrintWriter to write to the response body. Then with <strong>out.println()</strong> method we send back to the client our response data. Note that the data goes straight to the client and is not held in the response object. Response is just a helper object and is not an intermediary space to store the data. After the <strong>doGet()</strong> method finishes executing, the container closes the connection with the client. </p>
+<p><code>mailto:someone@gmail.com</code> - URL scheme of this one is mailto but mailto is not a protocol. So, URL&#39;s may have different schemes and they may not necessarily be protocols.</p>
 
-<p>In practice, you can do whatever you want in this <strong>doGet()</strong> method and are not limited to what&#39;s shown above. In this <strong>doGet()</strong> space you can:</p>
+<p><code>www.example.com</code> - this portion is the <strong>host</strong>.</p>
 
-<ul>
-<li>access a database<br></li>
-<li>access other components like <em>EJBs</em></li>
-<li>connect to other servers</li>
-<li>or whatever you can imagine under the sun</li>
-</ul>
+<p><code>8080</code> - this is the <strong>port</strong>. Requests from this port is routed to the application that is set up to handle requests coming from this port.</p>
+
+<p><code>2015/10/15/up-and-running.html</code> - this is the <strong>URL path</strong>. The web server uses this to identify the resource.</p>
+
+<p><code>www.example.com/some-folder/?couponCode=OFFER39</code> - the part that comes after the <strong>?</strong> is the <strong>query string</strong>. This string is passed to the web server. This is the <strong>name value pair</strong> that is passed on to the web server for processing.</p>
+
+<p><code>www.example.com/some-folder/?couponCode=OFFER39#discussions</code> - what comes after # is a <strong>fragment</strong>. It is like a bookmark in a resource - for example an <em>id of an element</em> in an html document. The sole purpose of a fragment in a URL is to show a particular portion of a resource at the client side. The fragment is not passed to the web server, because the web server returns the entire resource as a single unit - so the server does not need the fragment to process the information.</p>
 
   </article>
 

@@ -6,54 +6,43 @@
 </description>
     <link>//</link>
     <atom:link href="//feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 09 Nov 2015 01:17:25 -0500</pubDate>
-    <lastBuildDate>Mon, 09 Nov 2015 01:17:25 -0500</lastBuildDate>
+    <pubDate>Thu, 19 Nov 2015 19:22:57 -0500</pubDate>
+    <lastBuildDate>Thu, 19 Nov 2015 19:22:57 -0500</lastBuildDate>
     <generator>Jekyll v3.0.0</generator>
     
       <item>
         <title>How Web Applications Work</title>
-        <description>&lt;h2&gt;Http Protocol is a Request and Response protocol&lt;/h2&gt;
+        <description>&lt;h2&gt;1 - HTTP&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;HTTP Protocol&lt;/strong&gt; is a &lt;strong&gt;Request&lt;/strong&gt; and &lt;strong&gt;Response&lt;/strong&gt; protocol and the communication between a web application client such as a web browser and a web application such as Apache Tomcat server works as follows:  &lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Client establishes connection with web server.&lt;/li&gt;
-&lt;li&gt;Client sends web server a &lt;strong&gt;Request&lt;/strong&gt;. This request has details of what operations the client wants.&lt;/li&gt;
-&lt;li&gt;Web Server responds with a &lt;strong&gt;Response&lt;/strong&gt; back to the web client. Content of the response has what was requested and status.&lt;/li&gt;
-&lt;li&gt;Connection closes. Web server doesn’t remember anything about the past connections and who the clients were. That means another request coming from the same client is treated as a new request coming from a new client. Because of this, &lt;strong&gt;HTTP&lt;/strong&gt; protocol is called a stateless protocol. &lt;/li&gt;
+&lt;li&gt;The client first establishes a connection with the server.&lt;/li&gt;
+&lt;li&gt;After the connection is established, the client sends the web server a &lt;strong&gt;Request&lt;/strong&gt;. This request has details of what operations the client wants.&lt;/li&gt;
+&lt;li&gt;The web Server responds with a &lt;strong&gt;Response&lt;/strong&gt; back to the web client. Content of the response has what was requested and &lt;strong&gt;status&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;Finally, the connection gets closed. It&amp;#39;s important to note that the web server doesn’t remember anything about the past connections and who the clients were. This means that another request coming from the same client is treated as a new request coming from a new client. Because of this, the &lt;strong&gt;HTTP&lt;/strong&gt; protocol is called a &lt;strong&gt;stateless protocol&lt;/strong&gt;. &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;This one pair of Http Request and Response is called an Http Transaction.&lt;/p&gt;
+&lt;p&gt;This one pair of HTTP Request and Response is called an &lt;strong&gt;HTTP Transaction&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;h2&gt;URL&lt;/h2&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;AddHandler&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpServlet&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;   
-        &lt;span class=&quot;nd&quot;&gt;@Override&lt;/span&gt; 
-        &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;doGet&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;HttpServletRequest&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;HttpServletResponse&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;){&lt;/span&gt;
-            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getParameter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;x&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
-            &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Integer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;parseInt&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;request&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getParameter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;y&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;));&lt;/span&gt;
+&lt;h2&gt;2 - URL&lt;/h2&gt;
 
-            &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;setContentType&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/html&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//set content type&lt;/span&gt;
-
-            &lt;span class=&quot;n&quot;&gt;PrintWriter&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;getPrintWriter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;();&lt;/span&gt;
-            &lt;span class=&quot;n&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;!doctype html&amp;gt;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
-                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;html&amp;gt;\n&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; 
-                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;Sum of two numbers &amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;\n &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
-                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;body&amp;gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
-                        &lt;span class=&quot;s&quot;&gt;&quot;Sum of x and y is &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;
-                        &lt;span class=&quot;s&quot;&gt;&quot;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;p&gt;Let&amp;#39;s disect the following example URL to understand the pieces:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;http://www.example.com:8080/2015/10/15/up-and-running.html
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;&lt;code&gt;request.getParameter()&lt;/code&gt;&lt;/strong&gt; searches for parameters not only in the query string of the URL but also in the body of the request. That means you can also read the form input fields in the post request which travel in the body of the request. Besides getting the parameters, the request object can be used for getting any other request data, for example the headers, cookies, session, method, etc.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;http&lt;/code&gt; - this is the &lt;strong&gt;scheme&lt;/strong&gt; of the above URL. Some other popular schemes are &lt;em&gt;ftp&lt;/em&gt;, &lt;em&gt;mailto&lt;/em&gt;, &lt;em&gt;file&lt;/em&gt;, &lt;em&gt;data&lt;/em&gt;. Schemes indicate how to access the resource that follows, in this case it indicates to access the resource via the http protocol.&lt;/p&gt;
 
-&lt;p&gt;We send a response to the client using the response helper object after setting the content type with the &lt;strong&gt;response.setContentType()&lt;/strong&gt; method. Then, we instantiate a writer object PrintWriter to write to the response body. Then with &lt;strong&gt;out.println()&lt;/strong&gt; method we send back to the client our response data. Note that the data goes straight to the client and is not held in the response object. Response is just a helper object and is not an intermediary space to store the data. After the &lt;strong&gt;doGet()&lt;/strong&gt; method finishes executing, the container closes the connection with the client. &lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mailto:someone@gmail.com&lt;/code&gt; - URL scheme of this one is mailto but mailto is not a protocol. So, URL&amp;#39;s may have different schemes and they may not necessarily be protocols.&lt;/p&gt;
 
-&lt;p&gt;In practice, you can do whatever you want in this &lt;strong&gt;doGet()&lt;/strong&gt; method and are not limited to what&amp;#39;s shown above. In this &lt;strong&gt;doGet()&lt;/strong&gt; space you can:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;www.example.com&lt;/code&gt; - this portion is the &lt;strong&gt;host&lt;/strong&gt;.&lt;/p&gt;
 
-&lt;ul&gt;
-&lt;li&gt;access a database&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;access other components like &lt;em&gt;EJBs&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;connect to other servers&lt;/li&gt;
-&lt;li&gt;or whatever you can imagine under the sun&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;8080&lt;/code&gt; - this is the &lt;strong&gt;port&lt;/strong&gt;. Requests from this port is routed to the application that is set up to handle requests coming from this port.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;2015/10/15/up-and-running.html&lt;/code&gt; - this is the &lt;strong&gt;URL path&lt;/strong&gt;. The web server uses this to identify the resource.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;www.example.com/some-folder/?couponCode=OFFER39&lt;/code&gt; - the part that comes after the &lt;strong&gt;?&lt;/strong&gt; is the &lt;strong&gt;query string&lt;/strong&gt;. This string is passed to the web server. This is the &lt;strong&gt;name value pair&lt;/strong&gt; that is passed on to the web server for processing.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;www.example.com/some-folder/?couponCode=OFFER39#discussions&lt;/code&gt; - what comes after # is a &lt;strong&gt;fragment&lt;/strong&gt;. It is like a bookmark in a resource - for example an &lt;em&gt;id of an element&lt;/em&gt; in an html document. The sole purpose of a fragment in a URL is to show a particular portion of a resource at the client side. The fragment is not passed to the web server, because the web server returns the entire resource as a single unit - so the server does not need the fragment to process the information.&lt;/p&gt;
 </description>
         <pubDate>Fri, 06 Nov 2015 09:34:52 -0500</pubDate>
         <link>//java/update/2015/11/06/how-webapps-work.html</link>
