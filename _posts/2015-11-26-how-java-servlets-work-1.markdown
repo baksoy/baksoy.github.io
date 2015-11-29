@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "How Java Servlets Work"
+title:  "How Java Servlets Work I"
 date:   2015-11-26 09:34:52 -0500
 categories: java update
 ---
@@ -109,6 +109,7 @@ Some Common Features of Application Servers:
 
  *An object pool helps an application avoid creating new Java objects repeatedly. Most objects can be created once, used and then reused. An object pool supports the pooling of objects waiting to be reused. (source: ibm)
  
+ 
 ### Some topics to learn next
 
 * How to configure your Web Application
@@ -122,6 +123,4 @@ How to use multiple servlets together using include and forward for architecting
 MVC Model - understand how servlets do the processing of the requests and forward them to JSP's for UI rendering.
 
 If you want to jumpstart building web applications without going through a Servlets course, just learn some JSP, JSTL, EL and jump to a framework like the Spring or Play framework. Then you can learn about key concepts in servlets such as filters, security, etc.  
-With the introduction of Spring 4 and Spring Boot, Spring Framework got very simplified. 
-
-(source: https://www.udemy.com/web-application-and-java-servlet-concepts)
+With the introduction of Spring 4 and Spring Boot, Spring Framework got very simplified.
