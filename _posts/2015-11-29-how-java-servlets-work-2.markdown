@@ -118,8 +118,7 @@ So where do they come from?*
 
 They come via inheritance when we extend the HttpServlet class, which actually extends GenericServlet. The HttpServlet class reads the HTTP request, and determines if the request is an HTTP `GET, POST, PUT, DELETE, HEAD,` etc. and calls one of the corresponding methods. The GenericServlet has the `init(ServletConfig), init(), and service()` methods. The HttpServlet class overrides the `service()` method it inherits from the GenericServlet class. MyServlet has the `doGet()` and `doPost()` methods.
 
-![Method Execution Hierarchy](http://i.imgur.com/6NKMKeP.png)
-(image source: https://javabrains.io)
+![Method Execution Hierarchy](http://i.imgur.com/tPytSz1.png?1)
 
 *So since HTTP is stateless, how can we remember say a logged in user's credentials?* 
 
