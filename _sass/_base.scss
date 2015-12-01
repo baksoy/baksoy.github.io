@@ -97,11 +97,11 @@
 
 /* Block Quotes
  * ============================================== */
-    blockquote {
-        color: #BBB;
+     blockquote {
+        color: #8A8585;
         border-left: 4px solid $brand-color;
         padding-left: $spacing-unit / 2;
-        font-size: 17px;
+        font-size: 0.9em;
         letter-spacing: -1px;
         font-style: italic;
 
@@ -109,6 +109,7 @@
             margin-bottom: 0;
         }
     }
+
 
 /* Code Blocks
  * ============================================== */

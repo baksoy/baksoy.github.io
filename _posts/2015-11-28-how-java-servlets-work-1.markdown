@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "How Java Servlets Work I"
-date:   2015-11-26 09:34:52 -0500
+date:   2015-11-28 09:34:52 -0500
 categories: java update
 ---
 
