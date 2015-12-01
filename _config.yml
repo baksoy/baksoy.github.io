@@ -1,5 +1,7 @@
 # Site settings
 title: Programming Concepts
+owner: Bera Aksoy
+website: http://baksoy.github.io
 email: 
 description: > # this means to ignore newlines until "baseurl:"
   Jekyll Theme Demo
@@ -7,6 +9,7 @@ baseurl: "" # the subpath of your site, e.g. /blog/
 url: "/" # the base hostname & protocol for your site
 twitter_username: baxoy
 github_username: baksoy
+
 
 # Build settings
 markdown: redcarpet
