@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON Tree Viewer</title>
+    <title>Data Tree Viewer</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0d9488">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
     <script>
         (function() {
             var t = localStorage.getItem('json-viewer-theme');
@@ -828,6 +829,64 @@
             opacity: 0.3;
         }
 
+        /* ─── Fold Level Buttons ───────────────────────────────── */
+
+        .fold-level-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .fold-level-label {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 12px;
+            color: var(--text-faint);
+            letter-spacing: 0.3px;
+            margin-right: 2px;
+            white-space: nowrap;
+        }
+
+        .fold-level-btn {
+            padding: 0 10px;
+            height: 32px;
+            font-size: 13px;
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-weight: 500;
+            transition: all 0.2s var(--ease-out);
+            white-space: nowrap;
+        }
+
+        .fold-level-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .fold-level-btn:active {
+            transform: translateY(0);
+            background: var(--bg-active);
+        }
+
+        .fold-level-btn.active {
+            background: rgba(13,148,136,0.12);
+            color: var(--accent-indigo);
+            border-color: rgba(13,148,136,0.3);
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
         /* ─── Theme Transition (only during switch, not page load) */
 
         html.theme-transitioning,
@@ -931,14 +990,14 @@
 <body>
     <!-- Minimal drag overlay -->
     <div class="drag-overlay" id="dragOverlay">
-        <div class="drag-overlay-text">Drop to load JSON</div>
+        <div class="drag-overlay-text">Drop to load JSON or YAML</div>
     </div>
 
     <!-- Import Modal -->
     <div class="import-modal-overlay" id="importModal">
         <div class="import-modal">
             <div class="import-modal-header">
-                <span class="import-modal-title">Import JSON</span>
+                <span class="import-modal-title">Import JSON / YAML</span>
                 <button class="import-modal-close" id="importModalClose" aria-label="Close">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"/>
@@ -956,7 +1015,7 @@
                     </div>
                     <div class="import-option-text">
                         <div class="import-option-title">Upload File</div>
-                        <div class="import-option-desc">Select a .json file from your device</div>
+                        <div class="import-option-desc">Select a .json, .yaml, or .yml file from your device</div>
                     </div>
                 </div>
                 <div class="import-divider"><span>or</span></div>
@@ -969,7 +1028,7 @@
                     </div>
                     <div class="import-option-text">
                         <div class="import-option-title">Paste from Clipboard</div>
-                        <div class="import-option-desc">Import JSON currently in your clipboard</div>
+                        <div class="import-option-desc">Import JSON or YAML currently in your clipboard</div>
                     </div>
                     <span class="import-option-kbd">⌘V</span>
                 </div>
@@ -977,7 +1036,7 @@
         </div>
     </div>
 
-    <input type="file" id="fileInput" accept=".json" style="display: none;" />
+    <input type="file" id="fileInput" accept=".json,.yaml,.yml" style="display: none;" />
 
     <div class="page-layout">
         <div class="main-content">
@@ -994,7 +1053,7 @@
                                 </linearGradient>
                             </defs>
                         </svg>
-                        <h1>JSON <span class="h1-accent">Tree Viewer</span></h1>
+                        <h1>Data <span class="h1-accent">Tree Viewer</span></h1>
                     </div>
                     <button class="theme-toggle" id="themeToggle" title="Toggle light/dark mode" aria-label="Toggle theme">
                         <svg class="theme-icon theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1033,14 +1092,22 @@
                     </div>
                     <button onclick="expandAll()">Expand All</button>
                     <button onclick="collapseAll()">Collapse All</button>
-                    <button onclick="clearJSON()" class="clear-btn" id="clearBtn" title="Clear loaded JSON">Clear</button>
+                    <div class="fold-level-group" id="foldLevelGroup">
+                        <span class="fold-level-label">Level:</span>
+                        <button class="fold-level-btn" onclick="foldToLevel(1)" data-level="1">1</button>
+                        <button class="fold-level-btn" onclick="foldToLevel(2)" data-level="2">2</button>
+                        <button class="fold-level-btn" onclick="foldToLevel(3)" data-level="3">3</button>
+                        <button class="fold-level-btn" onclick="foldToLevel(4)" data-level="4">4</button>
+                        <button class="fold-level-btn" onclick="foldToLevel(5)" data-level="5">5</button>
+                    </div>
+                    <button onclick="clearJSON()" class="clear-btn" id="clearBtn" title="Clear loaded data">Clear</button>
                     <span class="drop-hint" id="dropHint" title="Click to browse or drag a file anywhere">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                             <polyline points="17 8 12 3 7 8"/>
                             <line x1="12" y1="3" x2="12" y2="15"/>
                         </svg>
-                        Drop JSON anywhere
+                        Drop JSON or YAML anywhere
                     </span>
                 </div>
 
@@ -1078,7 +1145,7 @@
 
         function showEmptyState() {
             const container = document.getElementById('jsonTree');
-            container.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: var(--text-muted);"><div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">{ }</div><div style="font-family: Outfit, sans-serif; font-size: 16px;">Drop a JSON file anywhere or click the upload hint above</div></div>';
+            container.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: var(--text-muted);"><div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">{ }</div><div style="font-family: Outfit, sans-serif; font-size: 16px;">Drop a JSON or YAML file anywhere or click the upload hint above</div></div>';
         }
 
         // --- Drag and Drop (full page) ---
@@ -1130,7 +1197,7 @@
         importFromClipboard.addEventListener('click', async function() {
             try {
                 const text = await navigator.clipboard.readText();
-                handleJSONText(text, 'clipboard');
+                handleDataText(text, 'clipboard');
                 closeImportModal();
             } catch (err) {
                 alert('Could not read clipboard. Please check your browser permissions or try using Ctrl/Cmd+V.');
@@ -1144,11 +1211,16 @@
 
             const text = e.clipboardData.getData('text');
             const trimmed = text ? text.trim() : '';
-            if (trimmed && (trimmed.startsWith('{') || trimmed.startsWith('['))) {
-                e.preventDefault();
-                handleJSONText(text, 'clipboard');
-                if (importModal.classList.contains('visible')) {
-                    closeImportModal();
+            if (trimmed) {
+                // Accept JSON (starts with { or [) or any non-empty text as potential YAML
+                const looksLikeJSON = trimmed.startsWith('{') || trimmed.startsWith('[');
+                const looksLikeYAML = trimmed.includes(':') || trimmed.startsWith('-');
+                if (looksLikeJSON || looksLikeYAML) {
+                    e.preventDefault();
+                    handleDataText(text, 'clipboard');
+                    if (importModal.classList.contains('visible')) {
+                        closeImportModal();
+                    }
                 }
             }
         });
@@ -1185,51 +1257,67 @@
         });
 
         function handleFile(file) {
-            if (!file.name.endsWith('.json') && file.type !== 'application/json') {
-                alert('Please drop a valid JSON file');
+            const name = file.name.toLowerCase();
+            const isJSON = name.endsWith('.json') || file.type === 'application/json';
+            const isYAML = name.endsWith('.yaml') || name.endsWith('.yml');
+            if (!isJSON && !isYAML) {
+                alert('Please drop a valid JSON or YAML file (.json, .yaml, .yml)');
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = function(e) {
-                handleJSONText(e.target.result, 'file');
+                handleDataText(e.target.result, 'file');
             };
             reader.readAsText(file);
         }
 
-        function handleJSONText(text, source) {
+        function handleDataText(text, source) {
+            let data;
+            let format = 'JSON';
             try {
-                jsonData = JSON.parse(text);
-                saveJSON(jsonData);
-
-                // Brief success feedback
-                showSuccessFeedback(source);
-                renderJSON(jsonData);
-            } catch (error) {
-                alert('Invalid JSON: ' + error.message);
+                data = JSON.parse(text);
+            } catch (_) {
+                try {
+                    data = jsyaml.load(text);
+                    if (data === null || data === undefined) {
+                        alert('The file appears to be empty or invalid.');
+                        return;
+                    }
+                    format = 'YAML';
+                } catch (e) {
+                    alert('Invalid JSON or YAML: ' + e.message);
+                    return;
+                }
             }
+            jsonData = data;
+            saveJSON(data);
+            showSuccessFeedback(source, format);
+            renderJSON(data);
         }
 
-        function showSuccessFeedback(source) {
+        function showSuccessFeedback(source, format) {
             const svgHTML = dropHint.querySelector('svg').outerHTML;
-            const message = source === 'clipboard' ? ' Pasted!' : ' Loaded!';
+            const label = format || 'JSON';
+            const message = source === 'clipboard' ? ' ' + label + ' pasted!' : ' ' + label + ' loaded!';
 
             dropHint.classList.add('success');
             dropHint.innerHTML = svgHTML + message;
 
             setTimeout(() => {
                 dropHint.classList.remove('success');
-                dropHint.innerHTML = svgHTML + ' Drop JSON anywhere';
+                dropHint.innerHTML = svgHTML + ' Drop JSON or YAML anywhere';
             }, 1500);
         }
 
         function renderJSON(data) {
             const container = document.getElementById('jsonTree');
             container.innerHTML = '';
-            container.appendChild(buildTree(data, true));
+            container.appendChild(buildTree(data, true, 0));
+            clearActiveLevelBtn();
         }
 
-        function buildTree(data, isRoot) {
+        function buildTree(data, isRoot, depth) {
             if (data === null || typeof data !== 'object') {
                 return createPrimitiveSpan(data);
             }
@@ -1245,14 +1333,15 @@
 
                 const childrenDiv = document.createElement('div');
                 childrenDiv.className = 'json-children expanded';
+                childrenDiv.dataset.depth = depth;
 
                 if (isArray) {
                     data.forEach(function(item, idx) {
-                        childrenDiv.appendChild(buildKeyValueLine(String(idx), item));
+                        childrenDiv.appendChild(buildKeyValueLine(String(idx), item, depth));
                     });
                 } else {
                     Object.keys(data).forEach(function(key) {
-                        childrenDiv.appendChild(buildKeyValueLine(key, data[key]));
+                        childrenDiv.appendChild(buildKeyValueLine(key, data[key], depth));
                     });
                 }
 
@@ -1267,7 +1356,7 @@
             return fragment;
         }
 
-        function buildKeyValueLine(key, value) {
+        function buildKeyValueLine(key, value, depth) {
             const line = document.createElement('div');
             line.className = 'json-line';
             line.setAttribute('data-key', key);
@@ -1279,6 +1368,7 @@
                 const toggle = document.createElement('span');
                 toggle.className = 'toggle-btn';
                 toggle.textContent = '▶';
+                toggle.dataset.depth = depth;
                 line.appendChild(toggle);
 
                 const keySpan = document.createElement('span');
@@ -1312,12 +1402,12 @@
 
                 const childrenDiv = document.createElement('div');
                 childrenDiv.className = 'json-children';
+                childrenDiv.dataset.depth = depth + 1;
 
                 if (isArr) {
                     value.forEach(function(item, idx) {
                         if (item !== null && typeof item === 'object') {
-                            const itemKeys = Array.isArray(item) ? item : Object.keys(item);
-                            const itemCount = Array.isArray(item) ? item.length : itemKeys.length;
+                            const itemCount = Array.isArray(item) ? item.length : Object.keys(item).length;
                             const itemIsArr = Array.isArray(item);
 
                             const itemLine = document.createElement('div');
@@ -1326,6 +1416,7 @@
                             const itemToggle = document.createElement('span');
                             itemToggle.className = 'toggle-btn';
                             itemToggle.textContent = '▶';
+                            itemToggle.dataset.depth = depth + 1;
                             itemLine.appendChild(itemToggle);
 
                             const idxSpan = document.createElement('span');
@@ -1359,12 +1450,14 @@
 
                             const itemChildren = document.createElement('div');
                             itemChildren.className = 'json-children';
-                            buildObjectChildren(item, itemChildren);
+                            itemChildren.dataset.depth = depth + 2;
+                            buildObjectChildren(item, itemChildren, depth + 2);
                             itemLine.appendChild(itemChildren);
 
                             itemToggle.addEventListener('click', function() {
                                 itemToggle.classList.toggle('expanded');
                                 itemChildren.classList.toggle('expanded');
+                                clearActiveLevelBtn();
                             });
 
                             childrenDiv.appendChild(itemLine);
@@ -1387,7 +1480,7 @@
                         }
                     });
                 } else {
-                    buildObjectChildren(value, childrenDiv);
+                    buildObjectChildren(value, childrenDiv, depth + 1);
                 }
 
                 line.appendChild(childrenDiv);
@@ -1395,6 +1488,7 @@
                 toggle.addEventListener('click', function() {
                     toggle.classList.toggle('expanded');
                     childrenDiv.classList.toggle('expanded');
+                    clearActiveLevelBtn();
                 });
             } else {
                 const spacer = document.createElement('span');
@@ -1417,14 +1511,14 @@
             return line;
         }
 
-        function buildObjectChildren(obj, container) {
+        function buildObjectChildren(obj, container, depth) {
             if (Array.isArray(obj)) {
                 obj.forEach(function(item, idx) {
-                    container.appendChild(buildKeyValueLine(String(idx), item));
+                    container.appendChild(buildKeyValueLine(String(idx), item, depth));
                 });
             } else {
                 Object.keys(obj).forEach(function(key) {
-                    container.appendChild(buildKeyValueLine(key, obj[key]));
+                    container.appendChild(buildKeyValueLine(key, obj[key], depth));
                 });
             }
         }
@@ -1450,6 +1544,7 @@
         function expandAll() {
             document.querySelectorAll('.toggle-btn').forEach(function(t) { t.classList.add('expanded'); });
             document.querySelectorAll('.json-children').forEach(function(c) { c.classList.add('expanded'); });
+            clearActiveLevelBtn();
         }
 
         function collapseAll() {
@@ -1457,6 +1552,35 @@
             document.querySelectorAll('.json-children').forEach(function(c) { c.classList.remove('expanded'); });
             var rootChildren = document.querySelector('#jsonTree > .json-children');
             if (rootChildren) rootChildren.classList.add('expanded');
+            clearActiveLevelBtn();
+        }
+
+        function foldToLevel(n) {
+            document.querySelectorAll('.toggle-btn').forEach(function(toggle) {
+                const depth = parseInt(toggle.dataset.depth, 10);
+                const children = toggle.parentElement.querySelector(':scope > .json-children');
+                if (!children) return;
+                if (depth < n) {
+                    toggle.classList.add('expanded');
+                    children.classList.add('expanded');
+                } else {
+                    toggle.classList.remove('expanded');
+                    children.classList.remove('expanded');
+                }
+            });
+            // Always keep root-level children visible
+            var rootChildren = document.querySelector('#jsonTree > .json-children');
+            if (rootChildren) rootChildren.classList.add('expanded');
+            // Mark the active level button
+            document.querySelectorAll('.fold-level-btn').forEach(function(btn) {
+                btn.classList.toggle('active', parseInt(btn.dataset.level, 10) === n);
+            });
+        }
+
+        function clearActiveLevelBtn() {
+            document.querySelectorAll('.fold-level-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
         }
 
         function clearJSON() {

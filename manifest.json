@@ -1,7 +1,7 @@
 {
-  "name": "JSON Tree Viewer",
-  "short_name": "JsonTree",
-  "description": "A beautiful JSON tree viewer",
+  "name": "Data Tree Viewer",
+  "short_name": "DataTree",
+  "description": "A beautiful JSON and YAML tree viewer",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#08080d",
