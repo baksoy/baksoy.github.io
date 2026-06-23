@@ -953,6 +953,188 @@
             transform: rotate(0deg);
         }
 
+        /* ─── Agent Script Viewer ──────────────────────────────── */
+
+        .agentscript-view {
+            display: none;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        body.mode-agentscript .agentscript-view { display: flex; }
+        body.mode-agentscript .json-tree { display: none; }
+        body.mode-agentscript .json-only { display: none !important; }
+
+        .as-only { display: none; }
+        body.mode-agentscript .as-only { display: inline-flex; }
+
+        .as-mode-badge {
+            align-items: center;
+            height: 32px;
+            padding: 0 12px;
+            border-radius: var(--radius-sm);
+            background: rgba(13,148,136,0.12);
+            color: var(--accent-indigo);
+            border: 1px solid rgba(13,148,136,0.3);
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .as-outline {
+            flex: 0 0 264px;
+            max-width: 264px;
+            align-self: flex-start;
+            position: sticky;
+            top: 12px;
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-lg);
+            padding: 14px 12px;
+            box-shadow: var(--shadow-md);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 13px;
+        }
+
+        .as-outline-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-faint);
+            margin: 0 0 10px 6px;
+            font-weight: 700;
+        }
+
+        .as-node { user-select: none; }
+
+        .as-node-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 6px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .as-node-label:hover { background: var(--bg-hover); color: var(--text-primary); }
+        .as-node-label.active { background: var(--toc-active-bg); color: var(--toc-active-color); }
+
+        .as-node-toggle {
+            width: 14px;
+            flex-shrink: 0;
+            font-size: 9px;
+            color: var(--text-faint);
+            transition: transform 0.15s;
+            text-align: center;
+        }
+
+        .as-node-toggle.collapsed { transform: rotate(-90deg); }
+        .as-node-spacer { width: 14px; flex-shrink: 0; }
+        .as-node-children { margin-left: 12px; }
+        .as-node-children.collapsed { display: none; }
+
+        .as-node-kind {
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: var(--text-faint);
+            margin-right: 5px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .as-node-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .as-source {
+            flex: 1;
+            min-width: 0;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-lg);
+            padding: 16px 0;
+            overflow-x: auto;
+            box-shadow: var(--shadow-md);
+            font-family: 'Source Code Pro', 'Fira Code', monospace;
+            font-size: 13.5px;
+            line-height: 1.65;
+        }
+
+        .as-line {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .as-line.hidden { display: none; }
+        .as-line:hover { background: var(--bg-hover); }
+        .as-line.flash { animation: flash-highlight 1.2s var(--ease-out); }
+
+        .as-gutter {
+            flex-shrink: 0;
+            width: 50px;
+            text-align: right;
+            padding-right: 16px;
+            color: var(--text-faint);
+            user-select: none;
+            position: relative;
+            font-size: 12px;
+        }
+
+        .as-fold {
+            position: absolute;
+            right: 2px;
+            cursor: pointer;
+            color: var(--text-muted);
+            width: 12px;
+            text-align: center;
+            transition: transform 0.15s, color 0.15s;
+        }
+
+        .as-fold.collapsed { transform: rotate(-90deg); }
+        .as-fold:hover { color: var(--accent-indigo); }
+
+        .as-code {
+            flex: 1;
+            white-space: pre-wrap;
+            word-break: break-word;
+            padding-right: 18px;
+        }
+
+        /* Agent Script token colors */
+        .tk-prose   { color: var(--type-string); }
+        .tk-string  { color: var(--type-string); }
+        .tk-keyword { color: var(--type-object); font-weight: 600; }
+        .tk-ref     { color: var(--type-number); }
+        .tk-interp  { color: var(--type-boolean); font-weight: 600; }
+        .tk-type    { color: var(--type-array); }
+        .tk-num     { color: var(--type-number); }
+        .tk-arrow   { color: var(--type-boolean); font-weight: 700; }
+        .tk-comment { color: var(--text-muted); font-style: italic; }
+        .tk-bool    { color: var(--type-boolean); font-weight: 600; }
+        .tk-bar     { color: var(--text-faint); font-weight: 700; margin-right: 1px; }
+
+        @media (max-width: 900px) {
+            .agentscript-view { flex-direction: column; }
+            .as-outline {
+                flex: 1 1 auto;
+                max-width: 100%;
+                position: static;
+                max-height: 240px;
+            }
+        }
+
         /* ─── Responsive ───────────────────────────────────────── */
         @media (max-width: 1024px) {
             .main-content {
@@ -1036,7 +1218,7 @@
         </div>
     </div>
 
-    <input type="file" id="fileInput" accept=".json,.yaml,.yml" style="display: none;" />
+    <input type="file" id="fileInput" accept=".json,.yaml,.yml,.agent" style="display: none;" />
 
     <div class="page-layout">
         <div class="main-content">
@@ -1075,7 +1257,7 @@
 
 
                 <div class="controls">
-                    <div class="search-wrapper">
+                    <div class="search-wrapper json-only">
                         <span class="search-icon">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8"/>
@@ -1086,13 +1268,13 @@
                         <span class="search-info" id="searchInfo"></span>
                         <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
                     </div>
-                    <div class="search-nav" id="searchNav">
+                    <div class="search-nav json-only" id="searchNav">
                         <button onclick="navigateMatch(-1)" title="Previous match (Shift+Enter)">▲</button>
                         <button onclick="navigateMatch(1)" title="Next match (Enter)">▼</button>
                     </div>
-                    <button onclick="expandAll()">Expand All</button>
-                    <button onclick="collapseAll()">Collapse All</button>
-                    <div class="fold-level-group" id="foldLevelGroup">
+                    <button class="json-only" onclick="expandAll()">Expand All</button>
+                    <button class="json-only" onclick="collapseAll()">Collapse All</button>
+                    <div class="fold-level-group json-only" id="foldLevelGroup">
                         <span class="fold-level-label">Level:</span>
                         <button class="fold-level-btn" onclick="foldToLevel(1)" data-level="1">1</button>
                         <button class="fold-level-btn" onclick="foldToLevel(2)" data-level="2">2</button>
@@ -1100,6 +1282,7 @@
                         <button class="fold-level-btn" onclick="foldToLevel(4)" data-level="4">4</button>
                         <button class="fold-level-btn" onclick="foldToLevel(5)" data-level="5">5</button>
                     </div>
+                    <span class="as-mode-badge as-only" title="Detected as Salesforce Agentforce Agent Script">⚡ Agent Script</span>
                     <button onclick="clearJSON()" class="clear-btn" id="clearBtn" title="Clear loaded data">Clear</button>
                     <span class="drop-hint" id="dropHint" title="Click to browse or drag a file anywhere">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1112,6 +1295,13 @@
                 </div>
 
                 <div class="json-tree" id="jsonTree"></div>
+
+                <div class="agentscript-view" id="agentScriptView">
+                    <nav class="as-outline" id="asOutline">
+                        <div class="as-outline-title">Outline</div>
+                    </nav>
+                    <div class="as-source" id="asSource"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -1119,8 +1309,14 @@
     <script>
         let jsonData = null;
         const STORAGE_KEY = 'json-viewer-data';
+        const AS_STORAGE_KEY = 'json-viewer-agentscript';
 
         function loadJSON() {
+            const savedAS = localStorage.getItem(AS_STORAGE_KEY);
+            if (savedAS) {
+                renderAgentScript(savedAS);
+                return;
+            }
             const saved = localStorage.getItem(STORAGE_KEY);
             if (saved) {
                 try {
@@ -1137,15 +1333,26 @@
 
         function saveJSON(data) {
             try {
+                localStorage.removeItem(AS_STORAGE_KEY);
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
             } catch (e) {
                 console.error('Failed to save JSON to localStorage:', e);
             }
         }
 
+        function saveAgentScript(text) {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.setItem(AS_STORAGE_KEY, text);
+            } catch (e) {
+                console.error('Failed to save Agent Script to localStorage:', e);
+            }
+        }
+
         function showEmptyState() {
             const container = document.getElementById('jsonTree');
-            container.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: var(--text-muted);"><div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">{ }</div><div style="font-family: Outfit, sans-serif; font-size: 16px;">Drop a JSON or YAML file anywhere or click the upload hint above</div></div>';
+            document.body.classList.remove('mode-agentscript');
+            container.innerHTML = '<div style="text-align: center; padding: 60px 20px; color: var(--text-muted);"><div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">{ }</div><div style="font-family: Outfit, sans-serif; font-size: 16px;">Drop a JSON, YAML, or Agent Script file anywhere or click the upload hint above</div></div>';
         }
 
         // --- Drag and Drop (full page) ---
@@ -1260,8 +1467,9 @@
             const name = file.name.toLowerCase();
             const isJSON = name.endsWith('.json') || file.type === 'application/json';
             const isYAML = name.endsWith('.yaml') || name.endsWith('.yml');
-            if (!isJSON && !isYAML) {
-                alert('Please drop a valid JSON or YAML file (.json, .yaml, .yml)');
+            const isAgent = name.endsWith('.agent');
+            if (!isJSON && !isYAML && !isAgent) {
+                alert('Please drop a valid JSON, YAML, or Agent Script file (.json, .yaml, .yml, .agent)');
                 return;
             }
 
@@ -1273,6 +1481,14 @@
         }
 
         function handleDataText(text, source) {
+            // Agent Script looks like YAML but isn't valid YAML — detect it first.
+            if (looksLikeAgentScript(text)) {
+                saveAgentScript(text);
+                renderAgentScript(text);
+                showSuccessFeedback(source, 'Agent Script');
+                return;
+            }
+
             let data;
             let format = 'JSON';
             try {
@@ -1296,6 +1512,25 @@
             renderJSON(data);
         }
 
+        // Distinguish Salesforce Agentforce Agent Script from plain JSON/YAML.
+        // Agent Script borrows YAML's look but adds a real grammar (pipe blocks,
+        // -> reasoning blocks, @refs, typed variable declarations) that a YAML
+        // parser rejects. Require ≥2 distinctive signals to avoid false positives.
+        function looksLikeAgentScript(text) {
+            const signals = [
+                /^\s*instructions:\s*->/m,
+                /^\s*(start_agent|subagent)\s+\w+\s*:/m,
+                /@(variables|subagent|actions|utils|outputs)\./,
+                /\btransition to\b/,
+                /\bmutable\s+(string|number|boolean|object|list)\b/
+            ];
+            let hits = 0;
+            for (let i = 0; i < signals.length; i++) {
+                if (signals[i].test(text)) hits++;
+            }
+            return hits >= 2;
+        }
+
         function showSuccessFeedback(source, format) {
             const svgHTML = dropHint.querySelector('svg').outerHTML;
             const label = format || 'JSON';
@@ -1311,6 +1546,7 @@
         }
 
         function renderJSON(data) {
+            document.body.classList.remove('mode-agentscript');
             const container = document.getElementById('jsonTree');
             container.innerHTML = '';
             container.appendChild(buildTree(data, true, 0));
@@ -1586,8 +1822,278 @@
         function clearJSON() {
             jsonData = null;
             localStorage.removeItem(STORAGE_KEY);
+            localStorage.removeItem(AS_STORAGE_KEY);
+            document.body.classList.remove('mode-agentscript');
             clearSearch();
             showEmptyState();
+        }
+
+        /* ─── Agent Script Rendering ───────────────────────────── */
+
+        let asLines = [];
+
+        function escapeHtml(s) {
+            return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // Highlight @refs and {!...} interpolations inside LLM prose.
+        function highlightInlineProse(s) {
+            let out = '', last = 0, m;
+            const re = /(\{![^}]*\})|(@[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)/g;
+            while ((m = re.exec(s))) {
+                if (m.index > last) out += escapeHtml(s.slice(last, m.index));
+                out += '<span class="' + (m[1] ? 'tk-interp' : 'tk-ref') + '">' + escapeHtml(m[0]) + '</span>';
+                last = re.lastIndex;
+            }
+            return out + escapeHtml(s.slice(last));
+        }
+
+        // A prose line is everything to the right of a pipe (LLM instructions),
+        // or a continuation line inside a pipe / block-scalar region.
+        function highlightProse(raw) {
+            const ws = raw.match(/^\s*/)[0];
+            let rest = raw.slice(ws.length);
+            let bar = '';
+            if (rest.startsWith('|')) {
+                bar = '<span class="tk-bar">|</span>';
+                rest = rest.slice(1);
+            }
+            return ws + bar + '<span class="tk-prose">' + highlightInlineProse(rest) + '</span>';
+        }
+
+        // Tokenize a code line: strings, interpolations, arrows, @refs,
+        // comments, control keywords, types, booleans, numbers.
+        function highlightInlineCode(s) {
+            let out = '', last = 0, m;
+            const re = /("(?:[^"\\]|\\.)*")|(\{![^}]*\})|(->)|(@[A-Za-z_]\w*(?:\.[A-Za-z_]\w*)*)|(#.*)|\b(transition to|available when|set|run|if|else|with|return|and|or|not)\b|\b(mutable|immutable|string|number|boolean|object|list|date)\b|\b(True|False|true|false|null)\b|(-?\d+(?:\.\d+)?)\b/g;
+            while ((m = re.exec(s))) {
+                if (m.index > last) out += escapeHtml(s.slice(last, m.index));
+                let cls;
+                if (m[1]) cls = 'tk-string';
+                else if (m[2]) cls = 'tk-interp';
+                else if (m[3]) cls = 'tk-arrow';
+                else if (m[4]) cls = 'tk-ref';
+                else if (m[5]) cls = 'tk-comment';
+                else if (m[6]) cls = 'tk-keyword';
+                else if (m[7]) cls = 'tk-type';
+                else if (m[8]) cls = 'tk-bool';
+                else cls = 'tk-num';
+                out += '<span class="' + cls + '">' + escapeHtml(m[0]) + '</span>';
+                last = re.lastIndex;
+            }
+            return out + escapeHtml(s.slice(last));
+        }
+
+        function highlightCodeLine(raw) {
+            const ws = raw.match(/^\s*/)[0];
+            let rest = raw.slice(ws.length);
+            let prefix = '', m;
+            if ((m = rest.match(/^(start_agent|subagent)(\s+)([A-Za-z_]\w*)/))) {
+                prefix = '<span class="tk-keyword">' + m[1] + '</span>' + m[2] + '<span class="tk-ref">' + m[3] + '</span>';
+                rest = rest.slice(m[0].length);
+            } else if ((m = rest.match(/^("?[A-Za-z_][\w]*"?)(\s*:)/))) {
+                prefix = '<span class="tk-keyword">' + escapeHtml(m[1]) + '</span>' + m[2];
+                rest = rest.slice(m[0].length);
+            }
+            return ws + prefix + highlightInlineCode(rest);
+        }
+
+        function renderAgentScript(text) {
+            document.body.classList.add('mode-agentscript');
+
+            const rawLines = text.replace(/\r\n/g, '\n').replace(/\t/g, '    ').split('\n');
+
+            // Pass 1: classify each line (prose vs code) and capture indent.
+            let proseIndent = null;
+            asLines = rawLines.map(function(raw, idx) {
+                const trimmed = raw.trim();
+                const blank = trimmed === '';
+                const indent = raw.length - raw.replace(/^\s*/, '').length;
+                let isProse = false;
+
+                if (proseIndent !== null) {
+                    if (blank) isProse = true;
+                    else if (indent > proseIndent) isProse = true;
+                    else proseIndent = null;
+                }
+                if (!isProse && !blank && trimmed.startsWith('|')) {
+                    proseIndent = indent;
+                    isProse = true;
+                }
+                let html;
+                if (blank) {
+                    html = '';
+                } else if (isProse) {
+                    html = highlightProse(raw);
+                } else {
+                    html = highlightCodeLine(raw);
+                    if (/:\s*\|\s*$/.test(trimmed)) proseIndent = indent; // block scalar
+                }
+                return { raw: raw, trimmed: trimmed, blank: blank, indent: indent, isProse: isProse, html: html, lineNo: idx };
+            });
+
+            // Pass 2: a line has children if the next non-blank line is deeper.
+            asLines.forEach(function(L, i) {
+                L.hasChildren = false;
+                for (let j = i + 1; j < asLines.length; j++) {
+                    if (asLines[j].blank) continue;
+                    L.hasChildren = asLines[j].indent > L.indent;
+                    break;
+                }
+            });
+
+            renderAgentScriptSource();
+            buildAgentScriptOutline();
+        }
+
+        function renderAgentScriptSource() {
+            const source = document.getElementById('asSource');
+            source.innerHTML = '';
+            asLines.forEach(function(L) {
+                const line = document.createElement('div');
+                line.className = 'as-line';
+                line.id = 'as-l-' + L.lineNo;
+
+                const gutter = document.createElement('span');
+                gutter.className = 'as-gutter';
+                gutter.appendChild(document.createTextNode(String(L.lineNo + 1)));
+                if (L.hasChildren) {
+                    const fold = document.createElement('span');
+                    fold.className = 'as-fold';
+                    fold.textContent = '▾';
+                    fold.addEventListener('click', function() { toggleAgentFold(L.lineNo); });
+                    L.foldEl = fold;
+                    gutter.appendChild(fold);
+                }
+
+                const code = document.createElement('span');
+                code.className = 'as-code';
+                code.innerHTML = L.html || '​';
+
+                line.appendChild(gutter);
+                line.appendChild(code);
+                L.el = line;
+                source.appendChild(line);
+            });
+        }
+
+        function toggleAgentFold(startNo) {
+            const L = asLines[startNo];
+            const collapsed = L.foldEl.classList.toggle('collapsed');
+            for (let j = startNo + 1; j < asLines.length; j++) {
+                const Lj = asLines[j];
+                if (!Lj.blank && Lj.indent <= L.indent) break;
+                Lj.el.classList.toggle('hidden', collapsed);
+            }
+        }
+
+        function buildAgentScriptOutline() {
+            const outline = document.getElementById('asOutline');
+            outline.querySelectorAll('.as-node').forEach(function(n) { n.remove(); });
+
+            // Collect structural headers worth navigating to.
+            const items = [];
+            asLines.forEach(function(L) {
+                if (L.blank || L.isProse) return;
+                const t = L.trimmed;
+                let kind = null, text = null, m;
+                if ((m = t.match(/^(start_agent|subagent)\s+(\w+)\s*:/))) {
+                    kind = m[1] === 'start_agent' ? 'start' : 'sub';
+                    text = m[2];
+                } else if (/^(system|config|language|variables):\s*$/.test(t)) {
+                    kind = 'section';
+                    text = t.replace(/:\s*$/, '');
+                } else if (L.indent > 0 && /^(reasoning|before_reasoning|after_reasoning|actions):\s*$/.test(t)) {
+                    kind = 'block';
+                    text = t.replace(/:\s*$/, '');
+                } else if (L.indent > 0 && /^\w+:\s*(mutable|immutable)\b/.test(t)) {
+                    kind = 'var';
+                    text = t.match(/^(\w+):/)[1];
+                } else {
+                    return;
+                }
+                items.push({ indent: L.indent, kind: kind, text: text, lineNo: L.lineNo });
+            });
+
+            // Build a tree by indentation.
+            const root = { children: [] };
+            const stack = [{ indent: -1, node: root }];
+            items.forEach(function(it) {
+                while (stack.length > 1 && stack[stack.length - 1].indent >= it.indent) stack.pop();
+                const node = { kind: it.kind, text: it.text, lineNo: it.lineNo, children: [] };
+                stack[stack.length - 1].node.children.push(node);
+                stack.push({ indent: it.indent, node: node });
+            });
+
+            renderOutlineNodes(root.children, outline);
+        }
+
+        const AS_KIND_LABEL = { start: 'start', sub: 'sub', block: '', var: 'var', section: '' };
+
+        function renderOutlineNodes(nodes, parentEl) {
+            nodes.forEach(function(node) {
+                const wrap = document.createElement('div');
+                wrap.className = 'as-node';
+
+                const label = document.createElement('div');
+                label.className = 'as-node-label';
+                const hasKids = node.children.length > 0;
+
+                const toggle = document.createElement('span');
+                if (hasKids) {
+                    toggle.className = 'as-node-toggle';
+                    toggle.textContent = '▾';
+                } else {
+                    toggle.className = 'as-node-spacer';
+                }
+                label.appendChild(toggle);
+
+                const kindLabel = AS_KIND_LABEL[node.kind];
+                if (kindLabel) {
+                    const k = document.createElement('span');
+                    k.className = 'as-node-kind';
+                    k.textContent = kindLabel;
+                    label.appendChild(k);
+                }
+
+                const txt = document.createElement('span');
+                txt.className = 'as-node-text';
+                txt.textContent = node.text;
+                label.appendChild(txt);
+
+                wrap.appendChild(label);
+
+                let kidsEl = null;
+                if (hasKids) {
+                    kidsEl = document.createElement('div');
+                    kidsEl.className = 'as-node-children';
+                    renderOutlineNodes(node.children, kidsEl);
+                    wrap.appendChild(kidsEl);
+                    toggle.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        toggle.classList.toggle('collapsed');
+                        kidsEl.classList.toggle('collapsed');
+                    });
+                }
+
+                label.addEventListener('click', function() {
+                    scrollToAgentLine(node.lineNo);
+                    document.querySelectorAll('.as-node-label.active').forEach(function(el) { el.classList.remove('active'); });
+                    label.classList.add('active');
+                });
+
+                parentEl.appendChild(wrap);
+            });
+        }
+
+        function scrollToAgentLine(lineNo) {
+            const L = asLines[lineNo];
+            if (!L || !L.el) return;
+            L.el.classList.remove('hidden');
+            L.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            L.el.classList.remove('flash');
+            void L.el.offsetWidth; // restart animation
+            L.el.classList.add('flash');
         }
 
         // --- Search / Filter ---
