@@ -2840,6 +2840,10 @@
             'reasoning':      { tag: 'llm', title: 'reasoning phase', body: 'The core LLM loop. May run multiple passes within a single turn until the subagent transitions or replies.' },
             'before_reasoning':{ tag: 'det', title: 'before_reasoning phase', body: 'Deterministic setup that runs once before the LLM loop — e.g. seed a variable or run a lookup action.' },
             'after_reasoning':{ tag: 'det', title: 'after_reasoning phase', body: 'Deterministic exit logic that runs after the LLM loop — e.g. branch on a result variable and transition.' },
+            'system':         { tag: 'det', title: 'system block', body: 'Agent-wide settings shared by every subagent: the base <code>instructions</code> and the canned <code>messages</code> (welcome / error) shown to users.' },
+            'config':         { tag: 'det', title: 'config block', body: 'Agent metadata — <code>agent_label</code>, <code>developer_name</code>, <code>agent_type</code>, and <code>description</code>. Identifies the agent; not part of the per-turn conversation logic.' },
+            'language':       { tag: 'det', title: 'language block', body: 'Locale settings: the <code>default_locale</code> and any <code>additional_locales</code> the agent supports.' },
+            'variables':      { tag: 'det', title: 'variables block', body: 'Declares the agent\'s shared memory. Every variable here is readable across subagents; <code>mutable</code> ones can also be written. The only channel subagents use to pass data to one another.' },
             'start_agent':    { tag: 'det', title: 'start_agent — Agent Router', body: 'The entry point. Routes each turn to the right subagent. LLM-chosen routing follows the “rule of 8”; deterministic routing (variable checks) has no such limit.' },
             'subagent':       { tag: 'det', title: 'subagent', body: 'A self-contained finite state machine with one job and clear entry/exit conditions. Subagents never nest — all sit at the same layer.' }
         };
