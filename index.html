@@ -61,6 +61,7 @@
             --type-object-bg: rgba(251,146,60,0.08);
             --type-array: #f472b6;
             --type-array-bg: rgba(236,72,153,0.08);
+            --as-mixed: #a78bfa;
 
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.15);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2);
@@ -110,6 +111,7 @@
             --type-object-bg: rgba(234,88,12,0.07);
             --type-array: #db2777;
             --type-array-bg: rgba(219,39,119,0.07);
+            --as-mixed: #7c3aed;
 
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.03);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
@@ -1218,7 +1220,7 @@
         }
         .as-station.kind-prose { border-left-color: var(--type-string); }
         .as-station.kind-logic { border-left-color: var(--type-object); }
-        .as-station.kind-mixed { border-left-color: var(--type-boolean); }
+        .as-station.kind-mixed { border-left-color: var(--as-mixed); }
         .as-station.is-start { box-shadow: 0 0 0 2px var(--accent-indigo), var(--shadow-sm); }
 
         .as-st-eyebrow {
@@ -1423,7 +1425,7 @@
                             <div class="as-flow-legend">
                                 <span class="as-leg"><span class="as-leg-dot" style="background:var(--type-string)"></span>LLM-driven</span>
                                 <span class="as-leg"><span class="as-leg-dot" style="background:var(--type-object)"></span>Logic-driven</span>
-                                <span class="as-leg"><span class="as-leg-dot" style="background:var(--type-boolean)"></span>Mixed</span>
+                                <span class="as-leg"><span class="as-leg-dot" style="background:var(--as-mixed)"></span>Mixed</span>
                                 <span class="as-leg"><span class="as-leg-line" style="border-color:var(--accent-indigo)"></span>Always</span>
                                 <span class="as-leg"><span class="as-leg-line" style="border-color:var(--type-boolean);border-top-style:dashed"></span>Conditional</span>
                             </div>
@@ -2441,7 +2443,7 @@
 
             // Station nodes.
             const KIND_LABEL = { prose: 'LLM', logic: 'Logic', mixed: 'Mixed' };
-            const KIND_VAR = { prose: '--type-string', logic: '--type-object', mixed: '--type-boolean' };
+            const KIND_VAR = { prose: '--type-string', logic: '--type-object', mixed: '--as-mixed' };
             model.nodes.forEach(function(n) {
                 const st = document.createElement('div');
                 st.className = 'as-station kind-' + n.kind + (n.isStart ? ' is-start' : '');
