@@ -1441,6 +1441,11 @@
 
         /* ─── Agent Script: grammar tooltips ───────────────────── */
         .tk-tip { cursor: help; border-bottom: 1px dotted color-mix(in srgb, currentColor 50%, transparent); }
+        .tk-tip:focus-visible {
+            outline: 2px solid var(--accent-indigo);
+            outline-offset: 2px;
+            border-radius: 3px;
+        }
         .as-tooltip {
             position: fixed; z-index: 9999; max-width: 320px;
             background: var(--bg-elevated);
@@ -1508,19 +1513,29 @@
                 font-size: 14px;
             }
         }
+
+        /* ─── Reduced motion ───────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Minimal drag overlay -->
     <div class="drag-overlay" id="dragOverlay">
-        <div class="drag-overlay-text">Drop to load JSON or YAML</div>
+        <div class="drag-overlay-text">Drop to load JSON, YAML, or Agent Script</div>
     </div>
 
     <!-- Import Modal -->
     <div class="import-modal-overlay" id="importModal">
         <div class="import-modal">
             <div class="import-modal-header">
-                <span class="import-modal-title">Import JSON / YAML</span>
+                <span class="import-modal-title">Import JSON / YAML / Agent Script</span>
                 <button class="import-modal-close" id="importModalClose" aria-label="Close">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="18" y1="6" x2="6" y2="18"/>
@@ -1643,7 +1658,7 @@
                             <polyline points="17 8 12 3 7 8"/>
                             <line x1="12" y1="3" x2="12" y2="15"/>
                         </svg>
-                        Drop JSON or YAML anywhere
+                        Drop JSON, YAML, or Agent Script anywhere
                     </span>
                 </div>
 
@@ -1682,6 +1697,13 @@
         let jsonData = null;
         const STORAGE_KEY = 'json-viewer-data';
         const AS_STORAGE_KEY = 'json-viewer-agentscript';
+
+        // Honor the OS "reduce motion" setting for JS-driven scrolling —
+        // the CSS scroll-behavior override only covers CSS-initiated scrolls.
+        const reduceMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+        function scrollIntoViewMotionSafe(el) {
+            el.scrollIntoView({ behavior: reduceMotionMQ.matches ? 'auto' : 'smooth', block: 'center' });
+        }
 
         function loadJSON() {
             const savedAS = localStorage.getItem(AS_STORAGE_KEY);
@@ -1913,7 +1935,7 @@
 
             setTimeout(() => {
                 dropHint.classList.remove('success');
-                dropHint.innerHTML = svgHTML + ' Drop JSON or YAML anywhere';
+                dropHint.innerHTML = svgHTML + ' Drop JSON, YAML, or Agent Script anywhere';
             }, 1500);
         }
 
@@ -2204,6 +2226,16 @@
         /* ─── Agent Script Rendering ───────────────────────────── */
 
         let asLines = [];
+        // Parsed-model caches. Both builders walk all of asLines, and the
+        // Variables/Actions/Flow/Guide tabs re-invoke them on every switch
+        // (Guide needs both). asLines only changes on a fresh render, so cache
+        // each result and clear the pair whenever a new script is parsed.
+        let _flowModelCache = null;
+        let _asModelCache = null;
+        function invalidateAgentModelCache() {
+            _flowModelCache = null;
+            _asModelCache = null;
+        }
 
         function escapeHtml(s) {
             return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -2273,6 +2305,7 @@
 
         function renderAgentScript(text) {
             document.body.classList.add('mode-agentscript');
+            invalidateAgentModelCache();
 
             const rawLines = text.replace(/\r\n/g, '\n').replace(/\t/g, '    ').split('\n');
 
@@ -2352,6 +2385,17 @@
                 line.appendChild(code);
                 L.el = line;
                 source.appendChild(line);
+            });
+
+            // Make tokens that carry a glossary definition keyboard-focusable
+            // (and visually hint they're interactive). Scoped to tokens with a
+            // real entry so tab order stays meaningful, not every span.
+            source.querySelectorAll(AS_TIP_SEL).forEach(function(el) {
+                if (!asTokenInfo(el)) return;
+                el.classList.add('tk-tip');
+                el.setAttribute('tabindex', '0');
+                el.setAttribute('role', 'button');
+                el.setAttribute('aria-label', el.textContent.trim() + ' — definition');
             });
         }
 
@@ -2468,7 +2512,7 @@
             const L = asLines[lineNo];
             if (!L || !L.el) return;
             L.el.classList.remove('hidden');
-            L.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            scrollIntoViewMotionSafe(L.el);
             L.el.classList.remove('flash');
             void L.el.offsetWidth; // restart animation
             L.el.classList.add('flash');
@@ -2527,8 +2571,13 @@
         /* ─── Agent Script: Flow view (transit map) ────────────── */
 
         // Parse subagents into nodes + transition edges, classify each
-        // subagent by how prose- vs logic-heavy its body is.
+        // subagent by how prose- vs logic-heavy its body is. Cached per render.
         function buildFlowModel() {
+            if (_flowModelCache) return _flowModelCache;
+            return (_flowModelCache = computeFlowModel());
+        }
+
+        function computeFlowModel() {
             const nodes = [];
             const byName = {};
             let cur = null;
@@ -2831,12 +2880,13 @@
             source._tipBound = true;
             const tip = ensureTooltipEl();
             let hideTimer = null;
+            let pinned = null; // token whose tip is held open by a tap/click
 
-            source.addEventListener('mouseover', function(ev) {
-                const el = ev.target.closest(AS_TIP_SEL);
-                if (!el || !source.contains(el)) return;
+            // Build, position, and reveal the tooltip for a token. Returns
+            // false (and shows nothing) when the token has no glossary entry.
+            function showTip(el) {
                 const info = asTokenInfo(el);
-                if (!info) return;
+                if (!info) return false;
                 clearTimeout(hideTimer);
                 // Head built from DOM nodes; body is a static trusted glossary string.
                 tip.replaceChildren();
@@ -2855,19 +2905,59 @@
                 tip.style.left = Math.min(r.left, window.innerWidth - 340) + 'px';
                 tip.style.top = (r.bottom + 8) + 'px';
                 tip.classList.add('show');
+                return true;
+            }
+            function hideTip() { tip.classList.remove('show'); pinned = null; }
+
+            // Mouse: hover to peek (unless a tip is pinned open by tap/click).
+            source.addEventListener('mouseover', function(ev) {
+                if (pinned) return;
+                const el = ev.target.closest(AS_TIP_SEL);
+                if (!el || !source.contains(el)) return;
+                showTip(el);
             });
             source.addEventListener('mouseout', function(ev) {
+                if (pinned) return;
                 const el = ev.target.closest(AS_TIP_SEL);
                 if (!el) return;
                 hideTimer = setTimeout(function() { tip.classList.remove('show'); }, 120);
+            });
+            // Keyboard: focusing a token reveals its definition; blur hides it.
+            source.addEventListener('focusin', function(ev) {
+                const el = ev.target.closest(AS_TIP_SEL);
+                if (!el || !source.contains(el)) return;
+                showTip(el);
+            });
+            source.addEventListener('focusout', function(ev) {
+                if (pinned) return;
+                if (ev.target.closest(AS_TIP_SEL)) tip.classList.remove('show');
+            });
+            // Touch / click: tap a token to pin its tip open, tap again or
+            // anywhere else to dismiss — touch devices have no hover.
+            source.addEventListener('click', function(ev) {
+                const el = ev.target.closest(AS_TIP_SEL);
+                if (!el || !source.contains(el)) return;
+                if (pinned === el) { hideTip(); return; }
+                if (showTip(el)) pinned = el;
+            });
+            document.addEventListener('click', function(ev) {
+                if (pinned && !ev.target.closest(AS_TIP_SEL) && !ev.target.closest('.as-tooltip')) hideTip();
+            });
+            document.addEventListener('keydown', function(ev) {
+                if (ev.key === 'Escape') hideTip();
             });
         }
 
         /* ─── Agent Script: shared model (variables + actions + usage) ─── */
 
         // Walk asLines once and extract the declared variables, every subagent,
-        // its actions, and per-subagent read/write usage of each variable.
+        // its actions, and per-subagent read/write usage of each variable. Cached per render.
         function buildAgentScriptModel() {
+            if (_asModelCache) return _asModelCache;
+            return (_asModelCache = computeAgentScriptModel());
+        }
+
+        function computeAgentScriptModel() {
             const vars = [];      // {name, mutability, type, def, lineNo}
             const varByName = {};
             const subagents = []; // {name, isStart, lineNo, label, actions:[], reads:{}, writes:{}}
@@ -3374,7 +3464,7 @@
                 currentMatchIndex = 0;
                 updateMatchInfo();
                 searchMatches[0].classList.add('current');
-                searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                scrollIntoViewMotionSafe(searchMatches[0]);
             } else {
                 searchInfo.style.display = 'block';
                 searchInfo.textContent = 'No matches';
@@ -3433,7 +3523,7 @@
                 currentMatchIndex = 0;
                 updateMatchInfo();
                 searchMatches[0].classList.add('current');
-                searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                scrollIntoViewMotionSafe(searchMatches[0]);
             } else {
                 searchInfo.style.display = 'block';
                 searchInfo.textContent = 'No matches';
@@ -3503,7 +3593,7 @@
             currentMatchIndex = (currentMatchIndex + direction + searchMatches.length) % searchMatches.length;
             searchMatches[currentMatchIndex].classList.add('current');
             updateMatchInfo();
-            searchMatches[currentMatchIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            scrollIntoViewMotionSafe(searchMatches[currentMatchIndex]);
         }
 
         function updateMatchInfo() {
@@ -3537,6 +3627,12 @@
             document.documentElement.classList.add('theme-transitioning');
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('json-viewer-theme', next);
+            // The Flow SVG bakes resolved theme colors into edge strokes and
+            // arrowheads at build time, so re-render the active agent view to
+            // pick up the new palette. Source view has nothing baked; cheap anyway.
+            if (document.body.classList.contains('mode-agentscript') && agentView !== 'source') {
+                setAgentView(agentView);
+            }
             setTimeout(function() {
                 document.documentElement.classList.remove('theme-transitioning');
             }, 350);
