@@ -61,7 +61,7 @@
             --type-object-bg: rgba(251,146,60,0.08);
             --type-array: #f472b6;
             --type-array-bg: rgba(236,72,153,0.08);
-            --as-mixed: #a78bfa;
+            --as-mixed: #38bdf8;
 
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px rgba(0,0,0,0.15);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2);
@@ -111,7 +111,7 @@
             --type-object-bg: rgba(234,88,12,0.07);
             --type-array: #db2777;
             --type-array-bg: rgba(219,39,119,0.07);
-            --as-mixed: #7c3aed;
+            --as-mixed: #0284c7;
 
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.03);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
@@ -1545,6 +1545,7 @@
                                 <span class="as-leg"><span class="as-leg-phase">↻</span>reasoning</span>
                                 <span class="as-leg"><span class="as-leg-phase">⬆</span>after</span>
                                 <span class="as-leg"><span class="as-leg-line" style="border-color:var(--accent-indigo)"></span>Always</span>
+                                <span class="as-leg"><span class="as-leg-line" style="border-color:var(--type-string);border-top-style:dashed"></span>LLM-decided</span>
                                 <span class="as-leg"><span class="as-leg-line" style="border-color:var(--type-boolean);border-top-style:dashed"></span>Conditional</span>
                             </div>
                             <div class="as-canvas" id="asCanvas"></div>
@@ -2452,40 +2453,53 @@
                 refs.forEach(function(ref) {
                     const to = ref.split('.')[1];
                     if (to === cur || !byName[to]) return;
-                    edges.push({ from: cur, to: to, cond: isConditionalTransition(i, L) });
+                    edges.push({ from: cur, to: to, etype: classifyTransition(i, L) });
                 });
             });
 
-            // Dedupe; an unconditional path wins over a conditional one.
+            // Dedupe by from→to. When the same hand-off is expressed more than once
+            // (e.g. an LLM action AND a deterministic resume-guard), the higher-rank
+            // kind wins: a truly-unconditional path dominates, then LLM-decided
+            // (the model's call is the salient fact), then a deterministic gate.
+            const RANK = { always: 3, llm: 2, cond: 1 };
             const seen = {};
             const merged = [];
             edges.forEach(function(e) {
                 const k = e.from + ' ' + e.to;
                 if (seen[k] === undefined) { seen[k] = merged.length; merged.push(e); }
-                else if (!e.cond) merged[seen[k]].cond = false;
+                else if (RANK[e.etype] > RANK[merged[seen[k]].etype]) merged[seen[k]].etype = e.etype;
             });
 
             return { nodes: nodes, byName: byName, edges: merged, startName: startName };
         }
 
-        // A transition is conditional if its action has an `available when`
-        // child, or it sits under an `if` in a reasoning block.
-        function isConditionalTransition(idx, L) {
-            if (/^if\b/.test(L.trimmed)) return true;
-            // forward: scan deeper-indented children for `available when`
-            for (let j = idx + 1; j < asLines.length; j++) {
+        // Classify a transition reference into one of three kinds:
+        //   'cond'   — deterministic: sits under an `if`, or an action gated by
+        //              `available when`. Fires only when a variable condition holds.
+        //   'llm'    — an ungated, LLM-callable action transition. The model decides
+        //              when (or whether) to take it — not the runtime.
+        //   'always' — a bare `transition to` with no condition and not inside an
+        //              action: it fires unconditionally every pass.
+        function classifyTransition(idx, L) {
+            const t = L.trimmed;
+            // Action definition?  e.g.  go_to_X: @utils.transition to @subagent.Y
+            if (/^\w+:\s*@utils\.transition\b/.test(t)) {
+                for (let j = idx + 1; j < asLines.length; j++) {
+                    const Lj = asLines[j];
+                    if (Lj.blank) continue;
+                    if (Lj.indent <= L.indent) break;       // left the action's children
+                    if (/available when/.test(Lj.trimmed)) return 'cond';
+                }
+                return 'llm';                                // ungated action → model decides
+            }
+            // Deterministic reasoning transition.
+            if (/^if\b/.test(t)) return 'cond';              // `if …: transition` one-liner
+            for (let j = idx - 1; j >= 0; j--) {             // bare `transition` under an `if`?
                 const Lj = asLines[j];
                 if (Lj.blank) continue;
-                if (Lj.indent <= L.indent) break;
-                if (/available when/.test(Lj.trimmed)) return true;
+                if (Lj.indent < L.indent) return /^if\b/.test(Lj.trimmed) ? 'cond' : 'always';
             }
-            // backward: nearest shallower line that is an `if`
-            for (let j = idx - 1; j >= 0; j--) {
-                const Lj = asLines[j];
-                if (Lj.blank) continue;
-                if (Lj.indent < L.indent) return /^if\b/.test(Lj.trimmed);
-            }
-            return false;
+            return 'always';
         }
 
         const FLOW = { stationW: 190, stationH: 62, gapX: 46, rowH: 124 };
@@ -2549,13 +2563,22 @@
             const svg = document.createElementNS(NS, 'svg');
             svg.setAttribute('width', canvasW);
             svg.setAttribute('height', canvasH);
-            const accent = getComputedStyle(document.documentElement).getPropertyValue('--accent-indigo').trim() || '#0d9488';
-            const amber = getComputedStyle(document.documentElement).getPropertyValue('--type-boolean').trim() || '#fbbf24';
+            const css = getComputedStyle(document.documentElement);
+            const accent = css.getPropertyValue('--accent-indigo').trim() || '#0d9488';
+            const amber = css.getPropertyValue('--type-boolean').trim() || '#fbbf24';
+            const green = css.getPropertyValue('--type-string').trim() || '#34d399';
+            // Per edge-kind visual style: color, marker id, dash pattern, width.
+            const ESTYLE = {
+                always: { color: accent, marker: 'arw',  dash: null,    w: '2' },
+                llm:    { color: green,  marker: 'arwl', dash: '5 4',   w: '1.8' },
+                cond:   { color: amber,  marker: 'arwc', dash: '5 4',   w: '1.5' }
+            };
 
             const defs = document.createElementNS(NS, 'defs');
-            defs.innerHTML =
-                '<marker id="arw" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="' + accent + '"/></marker>' +
-                '<marker id="arwc" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="' + amber + '"/></marker>';
+            function mk(id, fill) {
+                return '<marker id="' + id + '" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="' + fill + '"/></marker>';
+            }
+            defs.innerHTML = mk('arw', accent) + mk('arwc', amber) + mk('arwl', green);
             svg.appendChild(defs);
 
             model.edges.forEach(function(e) {
@@ -2573,12 +2596,13 @@
                     const off = 70;
                     d = 'M' + fx + ',' + fyM + ' C' + (fx + off) + ',' + fyM + ' ' + (tx + off) + ',' + tyM + ' ' + tx + ',' + tyM;
                 }
+                const s = ESTYLE[e.etype] || ESTYLE.always;
                 path.setAttribute('d', d);
                 path.setAttribute('fill', 'none');
-                path.setAttribute('stroke', e.cond ? amber : accent);
-                path.setAttribute('stroke-width', e.cond ? '1.5' : '2');
-                if (e.cond) path.setAttribute('stroke-dasharray', '5 4');
-                path.setAttribute('marker-end', e.cond ? 'url(#arwc)' : 'url(#arw)');
+                path.setAttribute('stroke', s.color);
+                path.setAttribute('stroke-width', s.w);
+                if (s.dash) path.setAttribute('stroke-dasharray', s.dash);
+                path.setAttribute('marker-end', 'url(#' + s.marker + ')');
                 path.setAttribute('opacity', '0.85');
                 svg.appendChild(path);
             });
