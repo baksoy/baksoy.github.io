@@ -111,7 +111,7 @@
             --type-object-bg: rgba(234,88,12,0.07);
             --type-array: #db2777;
             --type-array-bg: rgba(219,39,119,0.07);
-            --as-mixed: #0696c7;
+            --as-mixed: #02CCFE;
 
             --shadow-sm: 0 1px 2px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.03);
             --shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
@@ -1220,7 +1220,14 @@
         }
         .as-station.kind-prose { border-left-color: var(--type-string); }
         .as-station.kind-logic { border-left-color: var(--type-object); }
-        .as-station.kind-mixed { border-left-color: var(--as-mixed); }
+        .as-station.kind-mixed {
+            border-left: 5px solid var(--as-mixed);
+            border-color: color-mix(in srgb, var(--as-mixed) 55%, var(--border-strong));
+            background: color-mix(in srgb, var(--as-mixed) 12%, var(--bg-elevated));
+        }
+        .as-station.kind-mixed .as-st-kind-dot {
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--as-mixed) 30%, transparent);
+        }
         .as-station.is-start { box-shadow: 0 0 0 2px var(--accent-indigo), var(--shadow-sm); }
 
         .as-st-eyebrow {
