@@ -1263,15 +1263,19 @@
 
         /* ─── Agent Script: Variables + Actions panels ─────────── */
 
-        .as-vars, .as-actions-view { display: none; }
+        .as-vars, .as-actions-view, .as-guide { display: none; }
         body.as-vars-active .as-outline,
         body.as-vars-active .as-source,
         body.as-actions-active .as-outline,
-        body.as-actions-active .as-source { display: none; }
+        body.as-actions-active .as-source,
+        body.as-guide-active .as-outline,
+        body.as-guide-active .as-source { display: none; }
         body.as-vars-active .as-vars { display: block; flex: 1; min-width: 0; }
         body.as-actions-active .as-actions-view { display: block; flex: 1; min-width: 0; }
+        body.as-guide-active .as-guide { display: block; flex: 1; min-width: 0; }
         body.as-vars-active .as-controls,
-        body.as-actions-active .as-controls { display: none; }
+        body.as-actions-active .as-controls,
+        body.as-guide-active .as-controls { display: none; }
 
         .as-panel {
             background: var(--bg-surface);
@@ -1327,6 +1331,95 @@
         .as-use.w { color: var(--type-boolean); }
         .as-use.r { color: var(--type-number); }
         .as-use-none { color: var(--text-faint); font-style: italic; font-size: 12px; }
+
+        /* ─── Agent Script: Guide (in-app manual) ──────────────── */
+        .as-guide .as-panel { max-width: 940px; margin: 0 auto; }
+        .as-guide-lead {
+            font-size: 14px; color: var(--text-secondary); line-height: 1.6;
+            margin: 2px 0 4px;
+        }
+        /* Live summary strip */
+        .as-summary {
+            display: flex; flex-wrap: wrap; gap: 10px;
+            margin: 16px 0 4px;
+        }
+        .as-sum-card {
+            flex: 1 1 150px; min-width: 140px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-md);
+            padding: 11px 14px;
+        }
+        .as-sum-label {
+            font-size: 10px; letter-spacing: 0.5px; text-transform: uppercase;
+            color: var(--text-muted); font-weight: 700; margin-bottom: 5px;
+        }
+        .as-sum-big { font-size: 22px; font-weight: 700; color: var(--text-primary); line-height: 1.1; }
+        .as-sum-row { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-secondary); margin-top: 4px; }
+        .as-sum-row + .as-sum-row { margin-top: 2px; }
+        .as-sum-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+
+        /* Section headings within the guide */
+        .as-guide-sec { margin-top: 30px; }
+        .as-guide-sec h3 {
+            font-size: 15px; font-weight: 700; color: var(--text-primary);
+            margin: 0 0 4px; display: flex; align-items: center; gap: 8px;
+        }
+        .as-guide-sec h3 .as-sec-num {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px;
+            color: var(--accent-indigo); font-weight: 700;
+        }
+        .as-guide-sec > p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin: 6px 0; }
+
+        /* The one-idea callout: deterministic vs LLM, side by side */
+        .as-model {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+            margin: 12px 0 6px;
+        }
+        .as-model-col {
+            border: 1px solid var(--border-default); border-radius: var(--radius-md);
+            padding: 13px 15px; background: var(--bg-surface);
+        }
+        .as-model-col.is-det { border-left: 4px solid var(--type-object); }
+        .as-model-col.is-llm { border-left: 4px solid var(--type-string); }
+        .as-model-col h4 {
+            margin: 0 0 6px; font-size: 13px; font-weight: 700; color: var(--text-primary);
+            display: flex; align-items: center; gap: 7px;
+        }
+        .as-model-col p { margin: 0 0 8px; font-size: 12.5px; color: var(--text-muted); line-height: 1.5; }
+        .as-model-col code, .as-guide code {
+            font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+            color: var(--type-number);
+            background: var(--bg-elevated); padding: 1px 5px; border-radius: 4px;
+        }
+        .as-model-note {
+            margin: 4px 0 0; padding: 11px 14px;
+            border: 1px solid color-mix(in srgb, var(--as-mixed) 45%, transparent);
+            background: color-mix(in srgb, var(--as-mixed) 9%, transparent);
+            border-radius: var(--radius-md);
+            font-size: 12.5px; color: var(--text-secondary); line-height: 1.55;
+        }
+
+        /* "How to read each view" grid */
+        .as-views-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 10px 0; }
+        .as-view-card {
+            border: 1px solid var(--border-default); border-radius: var(--radius-md);
+            padding: 12px 15px; background: var(--bg-surface);
+        }
+        .as-view-card h4 { margin: 0 0 4px; font-size: 13px; font-weight: 700; color: var(--text-primary); }
+        .as-view-card p { margin: 0; font-size: 12.5px; color: var(--text-muted); line-height: 1.55; }
+
+        /* Legend explainer rows */
+        .as-legend-list { margin: 8px 0 0; display: flex; flex-direction: column; gap: 9px; }
+        .as-legend-row { display: flex; align-items: baseline; gap: 11px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
+        .as-legend-key { flex: 0 0 118px; display: flex; align-items: center; gap: 7px; font-weight: 600; color: var(--text-primary); }
+        .as-legend-row .as-leg-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+        .as-legend-row .as-leg-line { display: inline-block; width: 26px; border-top-width: 2px; border-top-style: solid; flex-shrink: 0; }
+        .as-legend-row .as-leg-phase { font-size: 14px; flex-shrink: 0; }
+
+        @media (max-width: 760px) {
+            .as-model, .as-views-grid { grid-template-columns: 1fr; }
+        }
 
         /* ─── Agent Script: grammar tooltips ───────────────────── */
         .tk-tip { cursor: help; border-bottom: 1px dotted color-mix(in srgb, currentColor 50%, transparent); }
@@ -1517,6 +1610,7 @@
                         <button class="as-tab" data-view="flow" onclick="setAgentView('flow')">Flow</button>
                         <button class="as-tab" data-view="vars" onclick="setAgentView('vars')">Variables</button>
                         <button class="as-tab" data-view="actions" onclick="setAgentView('actions')">Actions</button>
+                        <button class="as-tab" data-view="guide" onclick="setAgentView('guide')">Guide</button>
                     </div>
                     <div class="as-controls">
                         <button onclick="agentExpandAll()">Expand All</button>
@@ -1560,6 +1654,7 @@
                     </div>
                     <div class="as-vars" id="asVars"></div>
                     <div class="as-actions-view" id="asActionsView"></div>
+                    <div class="as-guide" id="asGuide"></div>
                 </div>
             </div>
         </div>
@@ -2390,12 +2485,14 @@
             document.body.classList.toggle('as-flow-active', v === 'flow');
             document.body.classList.toggle('as-vars-active', v === 'vars');
             document.body.classList.toggle('as-actions-active', v === 'actions');
+            document.body.classList.toggle('as-guide-active', v === 'guide');
             document.querySelectorAll('.as-tab').forEach(function(t) {
                 t.classList.toggle('active', t.dataset.view === v);
             });
             if (v === 'flow') buildFlowView();
             else if (v === 'vars') buildVarsView();
             else if (v === 'actions') buildActionsView();
+            else if (v === 'guide') buildGuideView();
         }
 
         /* ─── Agent Script: Flow view (transit map) ────────────── */
@@ -2977,6 +3074,134 @@
                     setAgentView('source'); agentExpandAll(); scrollToAgentLine(parseInt(el.dataset.line, 10));
                 });
             });
+        }
+
+        /* ─── Agent Script: Guide (in-app manual + live summary) ─ */
+
+        function buildGuideView() {
+            const host = document.getElementById('asGuide');
+            const flow = buildFlowModel();
+            const model = buildAgentScriptModel();
+
+            // Live counts from the same models the other tabs use.
+            const kinds = [
+                { key: 'prose', label: 'LLM-driven',   v: '--type-string' },
+                { key: 'logic', label: 'Logic-driven', v: '--type-object' },
+                { key: 'mixed', label: 'Hybrid',       v: '--as-mixed'    }
+            ];
+            const router = flow.nodes.filter(function(n) { return n.isStart; })[0];
+            const nodeCount = flow.nodes.length;
+            const mutCount = model.vars.filter(function(v) { return v.mutability === 'mutable'; }).length;
+            const linkedCount = model.vars.length - mutCount;
+            let allActions = [];
+            model.subagents.forEach(function(s) { allActions = allActions.concat(s.actions); });
+            const detCount = allActions.filter(function(a) { return a.deterministicOnly; }).length;
+            const llmCount = allActions.length - detCount;
+
+            let h = '<div class="as-panel">';
+            h += '<div class="as-panel-head"><div class="as-panel-title">Guide</div>' +
+                '<div class="as-panel-sub">How to read what you\'re looking at. This page explains the Source, Flow, Variables, and Actions tabs ' +
+                'in plain terms — the summary below describes the agent you have loaded right now.</div></div>';
+
+            // ── Live summary cards ──────────────────────────────
+            h += '<div class="as-summary">';
+            h += '<div class="as-sum-card"><div class="as-sum-label">Agent Router</div>' +
+                '<div class="as-sum-row" style="font-size:14px;color:var(--text-primary);font-weight:600">' +
+                '◎ ' + (router ? escapeHtml(router.name) : '<span class="as-use-none">none</span>') + '</div>' +
+                '<div class="as-sum-row">Entry point — routes every turn.</div></div>';
+
+            let breakdown = '';
+            kinds.forEach(function(k) {
+                const c = flow.nodes.filter(function(n) { return n.kind === k.key; }).length;
+                breakdown += '<div class="as-sum-row"><span class="as-sum-dot" style="background:var(' + k.v + ')"></span>' +
+                    c + ' ' + k.label + '</div>';
+            });
+            h += '<div class="as-sum-card"><div class="as-sum-label">Subagents</div>' +
+                '<div class="as-sum-big">' + nodeCount + '</div>' + breakdown + '</div>';
+
+            h += '<div class="as-sum-card"><div class="as-sum-label">Variables</div>' +
+                '<div class="as-sum-big">' + model.vars.length + '</div>' +
+                '<div class="as-sum-row"><span class="as-pill mut">mutable</span> ' + mutCount + '</div>' +
+                (linkedCount ? '<div class="as-sum-row"><span class="as-pill linked">linked</span> ' + linkedCount + '</div>' : '') +
+                '</div>';
+
+            h += '<div class="as-sum-card"><div class="as-sum-label">Actions</div>' +
+                '<div class="as-sum-big">' + allActions.length + '</div>' +
+                '<div class="as-sum-row"><span class="as-pill llm">LLM-callable</span> ' + llmCount + '</div>' +
+                '<div class="as-sum-row"><span class="as-pill det">deterministic</span> ' + detCount + '</div>' +
+                '</div>';
+            h += '</div>';
+
+            // ── Section 1: the one idea ─────────────────────────
+            h += '<div class="as-guide-sec"><h3><span class="as-sec-num">01</span>The one idea: logic vs. the model</h3>' +
+                '<p>Every line in an Agent Script is run by one of two things. Telling them apart is the whole skill — once you can, the colors and badges on the other tabs read themselves.</p>' +
+                '<div class="as-model">' +
+                '<div class="as-model-col is-det"><h4><span class="as-sum-dot" style="background:var(--type-object)"></span>Deterministic — logic decides</h4>' +
+                '<p>Runs the same way every time by checking variable values. The model is never asked.</p>' +
+                '<p><code>if</code> / <code>else</code>, <code>set</code>, <code>run</code>, <code>transition to</code>, <code>available when</code>, and everything in <code>before_reasoning</code> / <code>after_reasoning</code>.</p></div>' +
+                '<div class="as-model-col is-llm"><h4><span class="as-sum-dot" style="background:var(--type-string)"></span>LLM — the model decides</h4>' +
+                '<p>Natural-language guidance. The model reads it and chooses what to do.</p>' +
+                '<p>Anything to the right of a pipe <code>|</code>, and <code>{!@actions.x}</code> calls the model may or may not make.</p></div>' +
+                '</div>' +
+                '<div class="as-model-note"><strong style="color:var(--as-mixed)">Hybrid is normal, not a warning.</strong> ' +
+                'Most subagents put a deterministic gate around an LLM block — e.g. an <code>available when</code> that must hold before the model is allowed to act. ' +
+                'A subagent shown as <span style="color:var(--as-mixed);font-weight:600">Hybrid</span> is doing exactly that.</div>' +
+                '</div>';
+
+            // ── Section 2: how to read each view ────────────────
+            h += '<div class="as-guide-sec"><h3><span class="as-sec-num">02</span>The four views</h3>' +
+                '<div class="as-views-grid">' +
+                '<div class="as-view-card"><h4>Source</h4><p>The raw script, syntax-highlighted. Hover any keyword, pipe, or <code>@reference</code> for a one-line definition. Use the outline to jump between subagents.</p></div>' +
+                '<div class="as-view-card"><h4>Flow</h4><p>A transit map of subagents (stations) and the hand-offs between them (lines). Station color tells you logic vs. model vs. hybrid; line style tells you what triggers each hand-off.</p></div>' +
+                '<div class="as-view-card"><h4>Variables</h4><p>Shared memory. Subagents only pass data to each other through variables, so this answers “who writes this, and who reads it?” — the key to understanding cross-turn state.</p></div>' +
+                '<div class="as-view-card"><h4>Actions</h4><p>Everything a subagent can do. Split into LLM-callable (offered to the model) and deterministic (run by logic), with any <code>available when</code> gate shown.</p></div>' +
+                '</div></div>';
+
+            // ── Section 3: reading the Flow map (the legend) ────
+            h += '<div class="as-guide-sec"><h3><span class="as-sec-num">03</span>Reading the Flow map</h3>' +
+                '<p>The map has three vocabularies — station color, line style, and phase badges:</p>' +
+                '<div class="as-legend-list">' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-dot" style="background:var(--type-string)"></span>LLM-driven</span><span>The subagent is mostly natural-language instructions — the model drives.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-dot" style="background:var(--type-object)"></span>Logic-driven</span><span>Mostly deterministic — variable checks, assignments, transitions. No pipe block.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-dot" style="background:var(--as-mixed)"></span>Hybrid</span><span>Deterministic logic wrapped around an LLM block — the common, expected shape.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-line" style="border-color:var(--accent-indigo)"></span>Always</span><span>An unconditional <code>transition to</code>. Fires every pass — no condition, no model.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-line" style="border-color:var(--type-string);border-top-style:dashed"></span>LLM-decided</span><span>An ungated action transition. The model chooses whether and when to take it.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-line" style="border-color:var(--type-boolean);border-top-style:dashed"></span>Conditional</span><span>Gated by an <code>if</code> or <code>available when</code>. Fires only when a variable condition holds.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-phase">⬇</span>before</span><span><code>before_reasoning</code> — deterministic setup that runs once before the model loop.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-phase">↻</span>reasoning</span><span>The LLM decision loop — may run several passes until it transitions or replies.</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key"><span class="as-leg-phase">⬆</span>after</span><span><code>after_reasoning</code> — deterministic exit logic after the model loop (often a transition).</span></div>' +
+                '<div class="as-legend-row"><span class="as-legend-key">◎ Agent Router</span><span>The <code>start_agent</code> station — the per-turn entry point that routes to a subagent.</span></div>' +
+                '</div></div>';
+
+            // ── Section 4: grammar reference (from AS_GLOSSARY) ──
+            h += '<div class="as-guide-sec"><h3><span class="as-sec-num">04</span>Grammar reference</h3>' +
+                '<p>The same definitions you get by hovering tokens in the Source tab, in one place.</p>' +
+                '<table class="as-tbl"><thead><tr><th>Token</th><th>Run by</th><th>Meaning</th></tr></thead><tbody>';
+            const tagPill = function(tag) {
+                return tag === 'llm'
+                    ? '<span class="as-pill llm">LLM</span>'
+                    : '<span class="as-pill det">logic</span>';
+            };
+            Object.keys(AS_GLOSSARY).forEach(function(tok) {
+                const g = AS_GLOSSARY[tok];
+                h += '<tr><td><code>' + escapeHtml(tok) + '</code></td><td>' + tagPill(g.tag) + '</td><td>' + g.body + '</td></tr>';
+            });
+            // Reference scopes + interpolation (mirrors asTokenInfo).
+            const refRows = [
+                { tok: '@variables.x', tag: 'det', body: 'A reference to a declared variable — shared memory between subagents.' },
+                { tok: '@subagent.x',  tag: 'det', body: 'A reference to another subagent, used as a transition target.' },
+                { tok: '@actions.x',   tag: 'llm', body: 'A reference to an action the LLM may call.' },
+                { tok: '@utils.x',     tag: 'llm', body: 'A built-in utility (e.g. <code>setVariables</code>, <code>transition</code>) used to mutate state or move between subagents.' },
+                { tok: '@outputs.x',   tag: 'det', body: 'The output of the most recent action invocation.' },
+                { tok: '{!…}',         tag: 'llm', body: 'Interpolation — injects a value into the prompt at runtime, e.g. <code>{!@variables.X}</code> or <code>{!@actions.x}</code>.' }
+            ];
+            refRows.forEach(function(r) {
+                h += '<tr><td><code>' + escapeHtml(r.tok) + '</code></td><td>' + tagPill(r.tag) + '</td><td>' + r.body + '</td></tr>';
+            });
+            h += '</tbody></table></div>';
+
+            h += '</div>';
+            host.innerHTML = h;
         }
 
         // --- Search / Filter ---
