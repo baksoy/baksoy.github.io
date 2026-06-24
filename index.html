@@ -1235,6 +1235,119 @@
         .as-st-kind-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
         .as-st-label { font-size: 11px; color: var(--text-muted); margin-top: 3px; line-height: 1.35; }
 
+        /* Agent Router badge on the start station */
+        .as-station.is-start .as-st-eyebrow::before {
+            content: '◎ ';
+        }
+
+        /* Three-phase execution badges on stations */
+        .as-st-phases { display: flex; gap: 4px; margin-top: 6px; }
+        .as-phase-badge {
+            display: inline-flex; align-items: center; gap: 3px;
+            font-size: 9px; font-weight: 700; letter-spacing: 0.3px;
+            padding: 2px 6px; border-radius: 999px;
+            border: 1px solid var(--border-strong);
+            color: var(--text-muted);
+        }
+        .as-phase-badge.on-before   { color: var(--type-number); border-color: color-mix(in srgb, var(--type-number) 45%, transparent); background: color-mix(in srgb, var(--type-number) 10%, transparent); }
+        .as-phase-badge.on-reason   { color: var(--type-string); border-color: color-mix(in srgb, var(--type-string) 45%, transparent); background: color-mix(in srgb, var(--type-string) 10%, transparent); }
+        .as-phase-badge.on-after    { color: var(--type-boolean); border-color: color-mix(in srgb, var(--type-boolean) 45%, transparent); background: color-mix(in srgb, var(--type-boolean) 10%, transparent); }
+        .as-leg-phase { font-size: 13px; line-height: 1; }
+
+        /* ─── Agent Script: Variables + Actions panels ─────────── */
+
+        .as-vars, .as-actions-view { display: none; }
+        body.as-vars-active .as-outline,
+        body.as-vars-active .as-source,
+        body.as-actions-active .as-outline,
+        body.as-actions-active .as-source { display: none; }
+        body.as-vars-active .as-vars { display: block; flex: 1; min-width: 0; }
+        body.as-actions-active .as-actions-view { display: block; flex: 1; min-width: 0; }
+        body.as-vars-active .as-controls,
+        body.as-actions-active .as-controls { display: none; }
+
+        .as-panel {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-default);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: 22px 24px;
+            overflow: auto;
+            max-height: calc(100vh - 120px);
+            font-family: 'Outfit', sans-serif;
+        }
+        .as-panel-head { margin-bottom: 18px; }
+        .as-panel-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .as-panel-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
+
+        .as-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .as-tbl th {
+            text-align: left; padding: 8px 12px;
+            font-size: 10px; letter-spacing: 0.6px; text-transform: uppercase;
+            color: var(--text-faint); font-weight: 700;
+            border-bottom: 1px solid var(--border-strong);
+            position: sticky; top: 0; background: var(--bg-surface);
+        }
+        .as-tbl td {
+            padding: 9px 12px; border-bottom: 1px solid var(--border-default);
+            color: var(--text-secondary); vertical-align: top;
+        }
+        .as-tbl tr:hover td { background: var(--bg-hover); }
+        .as-tbl code {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px;
+            color: var(--type-number);
+        }
+        .as-var-name { font-weight: 600; color: var(--text-primary); }
+
+        .as-pill {
+            display: inline-block; font-size: 10px; font-weight: 700;
+            padding: 2px 8px; border-radius: 999px; letter-spacing: 0.3px;
+            border: 1px solid var(--border-strong); color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .as-pill.mut    { color: var(--type-boolean); border-color: color-mix(in srgb, var(--type-boolean) 45%, transparent); }
+        .as-pill.linked { color: var(--type-number); border-color: color-mix(in srgb, var(--type-number) 45%, transparent); }
+        .as-pill.llm    { color: var(--type-string); border-color: color-mix(in srgb, var(--type-string) 45%, transparent); }
+        .as-pill.det    { color: var(--type-object); border-color: color-mix(in srgb, var(--type-object) 45%, transparent); }
+        .as-pill.gate   { color: var(--as-mixed); border-color: color-mix(in srgb, var(--as-mixed) 45%, transparent); }
+        .as-type-pill   { font-family: 'JetBrains Mono', monospace; color: var(--type-array); font-size: 12px; }
+
+        .as-use {
+            display: inline-block; font-size: 11px; margin: 1px 5px 1px 0;
+            padding: 1px 7px; border-radius: 5px; background: var(--bg-elevated);
+            border: 1px solid var(--border-default);
+        }
+        .as-use.w { color: var(--type-boolean); }
+        .as-use.r { color: var(--type-number); }
+        .as-use-none { color: var(--text-faint); font-style: italic; font-size: 12px; }
+
+        /* ─── Agent Script: grammar tooltips ───────────────────── */
+        .tk-tip { cursor: help; border-bottom: 1px dotted color-mix(in srgb, currentColor 50%, transparent); }
+        .as-tooltip {
+            position: fixed; z-index: 9999; max-width: 320px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg, var(--shadow-md));
+            padding: 10px 13px;
+            font-family: 'Outfit', sans-serif; font-size: 12.5px; line-height: 1.5;
+            color: var(--text-secondary);
+            opacity: 0; transform: translateY(4px); pointer-events: none;
+            transition: opacity 0.12s, transform 0.12s;
+        }
+        .as-tooltip.show { opacity: 1; transform: translateY(0); }
+        .as-tooltip .tt-head {
+            font-weight: 700; color: var(--text-primary); margin-bottom: 4px;
+            display: flex; align-items: center; gap: 7px;
+        }
+        .as-tooltip .tt-tag {
+            font-size: 9px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+            padding: 1px 6px; border-radius: 999px;
+        }
+        .as-tooltip .tt-tag.llm { color: var(--type-string); border: 1px solid color-mix(in srgb, var(--type-string) 45%, transparent); }
+        .as-tooltip .tt-tag.det { color: var(--type-object); border: 1px solid color-mix(in srgb, var(--type-object) 45%, transparent); }
+        .as-tooltip code { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; color: var(--type-number); }
+
         @media (max-width: 900px) {
             .agentscript-view { flex-direction: column; }
             .as-outline {
@@ -1395,6 +1508,8 @@
                     <div class="as-viewtabs" id="asViewTabs">
                         <button class="as-tab active" data-view="source" onclick="setAgentView('source')">Source</button>
                         <button class="as-tab" data-view="flow" onclick="setAgentView('flow')">Flow</button>
+                        <button class="as-tab" data-view="vars" onclick="setAgentView('vars')">Variables</button>
+                        <button class="as-tab" data-view="actions" onclick="setAgentView('actions')">Actions</button>
                     </div>
                     <div class="as-controls">
                         <button onclick="agentExpandAll()">Expand All</button>
@@ -1425,13 +1540,18 @@
                             <div class="as-flow-legend">
                                 <span class="as-leg"><span class="as-leg-dot" style="background:var(--type-string)"></span>LLM-driven</span>
                                 <span class="as-leg"><span class="as-leg-dot" style="background:var(--type-object)"></span>Logic-driven</span>
-                                <span class="as-leg"><span class="as-leg-dot" style="background:var(--as-mixed)"></span>Mixed</span>
+                                <span class="as-leg"><span class="as-leg-dot" style="background:var(--as-mixed)"></span>Hybrid</span>
+                                <span class="as-leg"><span class="as-leg-phase">⬇</span>before</span>
+                                <span class="as-leg"><span class="as-leg-phase">↻</span>reasoning</span>
+                                <span class="as-leg"><span class="as-leg-phase">⬆</span>after</span>
                                 <span class="as-leg"><span class="as-leg-line" style="border-color:var(--accent-indigo)"></span>Always</span>
                                 <span class="as-leg"><span class="as-leg-line" style="border-color:var(--type-boolean);border-top-style:dashed"></span>Conditional</span>
                             </div>
                             <div class="as-canvas" id="asCanvas"></div>
                         </div>
                     </div>
+                    <div class="as-vars" id="asVars"></div>
+                    <div class="as-actions-view" id="asActionsView"></div>
                 </div>
             </div>
         </div>
@@ -2075,6 +2195,7 @@
 
             renderAgentScriptSource();
             buildAgentScriptOutline();
+            initAgentTooltips();
             setAgentView('source');
         }
 
@@ -2259,10 +2380,14 @@
         function setAgentView(v) {
             agentView = v;
             document.body.classList.toggle('as-flow-active', v === 'flow');
+            document.body.classList.toggle('as-vars-active', v === 'vars');
+            document.body.classList.toggle('as-actions-active', v === 'actions');
             document.querySelectorAll('.as-tab').forEach(function(t) {
                 t.classList.toggle('active', t.dataset.view === v);
             });
             if (v === 'flow') buildFlowView();
+            else if (v === 'vars') buildVarsView();
+            else if (v === 'actions') buildActionsView();
         }
 
         /* ─── Agent Script: Flow view (transit map) ────────────── */
@@ -2278,23 +2403,41 @@
             asLines.forEach(function(L) {
                 const m = L.trimmed.match(/^(start_agent|subagent)\s+(\w+)\s*:/);
                 if (L.indent === 0 && m) {
-                    cur = { name: m[2], isStart: m[1] === 'start_agent', lineNo: L.lineNo, label: null, prose: 0, code: 0 };
+                    cur = {
+                        name: m[2], isStart: m[1] === 'start_agent', lineNo: L.lineNo, label: null,
+                        prose: 0, code: 0, hasPipe: false, hasDeterministic: false,
+                        before: false, reasoning: false, after: false
+                    };
                     if (cur.isStart) startName = cur.name;
                     nodes.push(cur);
                     byName[cur.name] = cur;
                 } else if (cur) {
                     const lm = L.trimmed.match(/^label:\s*"([^"]*)"/);
                     if (lm && cur.label === null && L.indent <= 8) cur.label = lm[1];
-                    if (!L.blank) { if (L.isProse) cur.prose++; else cur.code++; }
+                    if (/^before_reasoning:/.test(L.trimmed)) cur.before = true;
+                    else if (/^reasoning:/.test(L.trimmed)) cur.reasoning = true;
+                    else if (/^after_reasoning:/.test(L.trimmed)) cur.after = true;
+                    if (!L.blank) {
+                        if (L.isProse) { cur.prose++; cur.hasPipe = true; }
+                        else {
+                            cur.code++;
+                            // Deterministic grammar: value checks, assignments, action runs, gates.
+                            if (/^(if|else|set|run)\b/.test(L.trimmed) ||
+                                /\btransition to\b/.test(L.trimmed) ||
+                                /\bavailable when\b/.test(L.trimmed)) cur.hasDeterministic = true;
+                        }
+                    }
                 }
             });
 
+            // Semantic classification (per the Agent Script deep-dives):
+            //   pipe `|` content = LLM/natural-language;  if/set/run/gates = deterministic.
+            //   A subagent that gates deterministic logic AROUND an LLM block is Hybrid —
+            //   the expected, common shape, not an edge case.
             nodes.forEach(function(n) {
-                const total = n.prose + n.code;
-                if (total === 0 || n.prose === 0) n.kind = 'logic';
-                else if (n.code === 0 || n.prose >= n.code * 1.3) n.kind = 'prose';
-                else if (n.code >= n.prose * 1.3) n.kind = 'logic';
-                else n.kind = 'mixed';
+                if (n.hasPipe && n.hasDeterministic) n.kind = 'mixed';
+                else if (n.hasPipe) n.kind = 'prose';
+                else n.kind = 'logic';
             });
 
             // Edges: any @subagent.X reference inside a block is a transition.
@@ -2442,7 +2585,6 @@
             canvas.appendChild(svg);
 
             // Station nodes.
-            const KIND_LABEL = { prose: 'LLM', logic: 'Logic', mixed: 'Mixed' };
             const KIND_VAR = { prose: '--type-string', logic: '--type-object', mixed: '--as-mixed' };
             model.nodes.forEach(function(n) {
                 const st = document.createElement('div');
@@ -2453,9 +2595,15 @@
                 st.setAttribute('tabindex', '0');
 
                 let html = '';
-                if (n.isStart) html += '<div class="as-st-eyebrow">▶ Start</div>';
+                if (n.isStart) html += '<div class="as-st-eyebrow">Agent Router</div>';
                 html += '<div class="as-st-name"><span class="as-st-kind-dot" style="background:var(' + KIND_VAR[n.kind] + ')"></span>' + escapeHtml(n.name) + '</div>';
                 if (n.label && n.label !== n.name) html += '<div class="as-st-label">' + escapeHtml(n.label) + '</div>';
+                // Three-phase execution badges — show which reasoning phases this subagent runs.
+                const phases = [];
+                if (n.before)    phases.push('<span class="as-phase-badge on-before" title="before_reasoning — deterministic setup before the LLM runs">⬇ before</span>');
+                if (n.reasoning) phases.push('<span class="as-phase-badge on-reason" title="reasoning — the LLM decision loop">↻ reasoning</span>');
+                if (n.after)     phases.push('<span class="as-phase-badge on-after" title="after_reasoning — deterministic exit logic after the LLM runs">⬆ after</span>');
+                if (phases.length) html += '<div class="as-st-phases">' + phases.join('') + '</div>';
                 st.innerHTML = html;
 
                 const jump = function() { setAgentView('source'); agentExpandAll(); scrollToAgentLine(n.lineNo); };
@@ -2464,6 +2612,339 @@
                     if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); jump(); }
                 });
                 canvas.appendChild(st);
+            });
+        }
+
+        /* ─── Agent Script: grammar tooltips ───────────────────── */
+
+        // Glossary of Agent Script grammar, keyed by exact token text.
+        // tag: 'llm' (natural-language, model decides) | 'det' (deterministic logic).
+        const AS_GLOSSARY = {
+            '|':              { tag: 'llm', title: 'Pipe — LLM instructions', body: 'Everything to the right of <code>|</code> is natural-language guidance for the model. The LLM, not the runtime, decides what to do with it.' },
+            '->':             { tag: 'det', title: 'Reasoning block', body: 'Opens a <code>reasoning</code> block. Lines without a pipe are deterministic; lines under a <code>|</code> are LLM instructions.' },
+            'transition to':  { tag: 'det', title: 'transition to', body: 'Deterministic hand-off to another subagent. Runs immediately when its condition holds — the LLM is not asked.' },
+            'available when': { tag: 'det', title: 'available when', body: 'A gate. The action is only offered once this condition is true — a deterministic precondition on an otherwise LLM-callable action.' },
+            'set':            { tag: 'det', title: 'set', body: 'Deterministic assignment to a <code>mutable</code> variable. The LLM cannot set variables directly — it must call a <code>setVariables</code> utility action.' },
+            'run':            { tag: 'det', title: 'run', body: 'Deterministically invokes an action (typically in <code>before_reasoning</code>/<code>after_reasoning</code>) without offering it to the model.' },
+            'if':             { tag: 'det', title: 'if', body: 'Deterministic branch on a variable value. Checking a variable in an <code>if</code> is logic — not an LLM decision.' },
+            'else':           { tag: 'det', title: 'else', body: 'Deterministic fallback branch of an <code>if</code>.' },
+            'with':           { tag: 'det', title: 'with', body: 'Binds an input to an action call, e.g. <code>with AccountName = …</code>. <code>…</code> means the LLM extracts the value from the conversation.' },
+            'mutable':        { tag: 'det', title: 'mutable variable', body: 'A read/write variable. Can be changed by deterministic <code>set</code> or by a <code>setVariables</code> action.' },
+            'linked':         { tag: 'det', title: 'linked variable', body: 'A read-only variable bound to an external source. Subagents can read it but never write it.' },
+            'reasoning':      { tag: 'llm', title: 'reasoning phase', body: 'The core LLM loop. May run multiple passes within a single turn until the subagent transitions or replies.' },
+            'before_reasoning':{ tag: 'det', title: 'before_reasoning phase', body: 'Deterministic setup that runs once before the LLM loop — e.g. seed a variable or run a lookup action.' },
+            'after_reasoning':{ tag: 'det', title: 'after_reasoning phase', body: 'Deterministic exit logic that runs after the LLM loop — e.g. branch on a result variable and transition.' },
+            'start_agent':    { tag: 'det', title: 'start_agent — Agent Router', body: 'The entry point. Routes each turn to the right subagent. LLM-chosen routing follows the “rule of 8”; deterministic routing (variable checks) has no such limit.' },
+            'subagent':       { tag: 'det', title: 'subagent', body: 'A self-contained finite state machine with one job and clear entry/exit conditions. Subagents never nest — all sit at the same layer.' }
+        };
+
+        let asTooltipEl = null;
+        function ensureTooltipEl() {
+            if (!asTooltipEl) {
+                asTooltipEl = document.createElement('div');
+                asTooltipEl.className = 'as-tooltip';
+                document.body.appendChild(asTooltipEl);
+            }
+            return asTooltipEl;
+        }
+
+        function asTokenInfo(el) {
+            const txt = el.textContent.trim();
+            if (AS_GLOSSARY[txt]) return AS_GLOSSARY[txt];
+            if (el.classList.contains('tk-interp')) return { tag: 'llm', title: 'Interpolation', body: 'Injects a value into the LLM prompt at runtime, e.g. <code>{!@variables.X}</code> or <code>{!@actions.x}</code>.' };
+            if (el.classList.contains('tk-ref')) {
+                const scope = txt.split('.')[0];
+                const map = {
+                    '@variables': { t: 'det', b: 'A reference to a declared variable — shared memory between subagents.' },
+                    '@subagent':  { t: 'det', b: 'A reference to another subagent, used as a transition target.' },
+                    '@actions':   { t: 'llm', b: 'A reference to an action the LLM may call.' },
+                    '@utils':     { t: 'llm', b: 'A built-in utility (e.g. <code>setVariables</code>, <code>transition</code>) used to mutate state or move between subagents.' },
+                    '@outputs':   { t: 'det', b: 'The output of the most recent action invocation.' }
+                };
+                if (map[scope]) return { tag: map[scope].t, title: scope + ' reference', body: map[scope].b };
+            }
+            return null;
+        }
+
+        const AS_TIP_SEL = '.tk-keyword, .tk-arrow, .tk-bar, .tk-interp, .tk-ref, .tk-type, .tk-bool';
+
+        function initAgentTooltips() {
+            const source = document.getElementById('asSource');
+            if (!source || source._tipBound) return;
+            source._tipBound = true;
+            const tip = ensureTooltipEl();
+            let hideTimer = null;
+
+            source.addEventListener('mouseover', function(ev) {
+                const el = ev.target.closest(AS_TIP_SEL);
+                if (!el || !source.contains(el)) return;
+                const info = asTokenInfo(el);
+                if (!info) return;
+                clearTimeout(hideTimer);
+                // Head built from DOM nodes; body is a static trusted glossary string.
+                tip.replaceChildren();
+                const head = document.createElement('div');
+                head.className = 'tt-head';
+                head.appendChild(document.createTextNode(info.title));
+                const tag = document.createElement('span');
+                tag.className = 'tt-tag ' + info.tag;
+                tag.textContent = info.tag === 'llm' ? 'LLM' : 'Logic';
+                head.appendChild(tag);
+                tip.appendChild(head);
+                const body = document.createElement('div');
+                body.insertAdjacentHTML('beforeend', info.body);
+                tip.appendChild(body);
+                const r = el.getBoundingClientRect();
+                tip.style.left = Math.min(r.left, window.innerWidth - 340) + 'px';
+                tip.style.top = (r.bottom + 8) + 'px';
+                tip.classList.add('show');
+            });
+            source.addEventListener('mouseout', function(ev) {
+                const el = ev.target.closest(AS_TIP_SEL);
+                if (!el) return;
+                hideTimer = setTimeout(function() { tip.classList.remove('show'); }, 120);
+            });
+        }
+
+        /* ─── Agent Script: shared model (variables + actions + usage) ─── */
+
+        // Walk asLines once and extract the declared variables, every subagent,
+        // its actions, and per-subagent read/write usage of each variable.
+        function buildAgentScriptModel() {
+            const vars = [];      // {name, mutability, type, def, lineNo}
+            const varByName = {};
+            const subagents = []; // {name, isStart, lineNo, label, actions:[], reads:{}, writes:{}}
+            let cur = null;       // current subagent
+            let curAction = null; // current action def inside cur
+            let inVars = false, varsIndent = -1;
+
+            asLines.forEach(function(L, i) {
+                if (L.blank) return;
+                const t = L.trimmed;
+
+                // Variables block.
+                if (L.indent === 0) {
+                    inVars = /^variables:\s*$/.test(t);
+                    varsIndent = inVars ? L.indent : -1;
+                } else if (inVars && L.indent > varsIndent) {
+                    const vm = t.match(/^(\w+):\s*(mutable|linked|immutable)\s+([\w\[\]]+)\s*(?:=\s*(.+?))?\s*$/);
+                    if (vm) {
+                        const v = { name: vm[1], mutability: vm[2], type: vm[3], def: vm[4] || null, lineNo: L.lineNo };
+                        vars.push(v); varByName[vm[1]] = v;
+                    }
+                }
+
+                // Subagent / start_agent headers.
+                const sm = t.match(/^(start_agent|subagent)\s+(\w+)\s*:/);
+                if (L.indent === 0 && sm) {
+                    cur = { name: sm[2], isStart: sm[1] === 'start_agent', lineNo: L.lineNo, label: null, actions: [], reads: {}, writes: {} };
+                    subagents.push(cur);
+                    curAction = null;
+                    inVars = false;
+                    return;
+                }
+                if (!cur) return;
+
+                const lm = t.match(/^label:\s*"([^"]*)"/);
+                if (lm && cur.label === null && L.indent <= 8) cur.label = lm[1];
+
+                // Action definitions: `name: @utils.xxx` or `name: @actions.Xxx`.
+                const am = t.match(/^(\w+):\s*@(utils|actions)\.([\w]+)(?:\s+to\s+@subagent\.(\w+))?/);
+                if (am) {
+                    let kind;
+                    if (am[2] === 'utils' && am[3] === 'setVariables') kind = 'set';
+                    else if (am[2] === 'utils' && /transition/.test(t)) kind = 'transition';
+                    else kind = 'invoke';
+                    curAction = {
+                        name: am[1], kind: kind, target: am[4] || am[3], lineNo: L.lineNo,
+                        indent: L.indent, desc: null, gate: null, deterministicOnly: false
+                    };
+                    cur.actions.push(curAction);
+                } else if (curAction && L.indent > curAction.indent) {
+                    const dm = t.match(/^description:\s*"([^"]*)"/);
+                    if (dm && !curAction.desc) curAction.desc = dm[1];
+                    const gm = t.match(/^available when\s+(.+)$/);
+                    if (gm) curAction.gate = gm[1].replace(/@variables\./g, '');
+                    // setVariables `with VAR = …` writes VAR.
+                    if (curAction.kind === 'set') {
+                        const wm = t.match(/^with\s+(\w+)\s*=/);
+                        if (wm && varByName[wm[1]]) cur.writes[wm[1]] = true;
+                    }
+                } else if (L.indent <= (curAction ? curAction.indent : 0)) {
+                    curAction = null;
+                }
+
+                // `run @actions.X` (before/after_reasoning) = deterministic-only invocation.
+                const runm = t.match(/^run\s+@actions\.(\w+)/);
+                if (runm) {
+                    cur._runDet = cur._runDet || {};
+                    cur._runDet[runm[1]] = true;
+                }
+
+                // Variable reads / writes anywhere in the subagent body.
+                let vmRef;
+                const reRef = /@variables\.(\w+)/g;
+                while ((vmRef = reRef.exec(L.raw))) {
+                    const name = vmRef[1];
+                    if (!varByName[name]) continue;
+                    // `set @variables.NAME =` is a write; everything else is a read.
+                    if (new RegExp('set\\s+@variables\\.' + name + '\\b').test(t)) cur.writes[name] = true;
+                    else cur.reads[name] = true;
+                }
+                const interpRe = /\{!\s*@variables\.(\w+)\s*\}/g;
+                while ((vmRef = interpRe.exec(L.raw))) {
+                    if (varByName[vmRef[1]]) cur.reads[vmRef[1]] = true;
+                }
+            });
+
+            // Second pass: external action-definition blocks (`Name:` with source:/target:
+            // children) — these include deterministic-only actions invoked via `run` that
+            // never appear as @utils/@actions bindings. Merge by name into their subagent.
+            let curSub = null;
+            asLines.forEach(function(L, i) {
+                if (L.blank) return;
+                if (L.indent === 0) {
+                    const sm = L.trimmed.match(/^(start_agent|subagent)\s+(\w+)\s*:/);
+                    curSub = sm ? subagents.find(function(s) { return s.name === sm[2]; }) : null;
+                    return;
+                }
+                if (!curSub) return;
+                const dm = L.trimmed.match(/^(\w+):\s*$/);
+                if (!dm) return;
+                // Skip structural block keywords — only named action defs qualify.
+                if (/^(reasoning|before_reasoning|after_reasoning|actions|inputs|outputs|system|config|language|variables|messages)$/.test(dm[1])) return;
+                // Confirm this is an action def: a deeper child declares source/target.
+                let isAction = false;
+                for (let j = i + 1; j < asLines.length; j++) {
+                    const Lj = asLines[j];
+                    if (Lj.blank) continue;
+                    if (Lj.indent <= L.indent) break;
+                    if (/^(source|target):/.test(Lj.trimmed)) { isAction = true; break; }
+                }
+                if (!isAction) return;
+                let a = curSub.actions.find(function(x) { return x.name === dm[1]; });
+                if (!a) {
+                    a = { name: dm[1], kind: 'invoke', target: dm[1], lineNo: L.lineNo, indent: L.indent, desc: null, gate: null, deterministicOnly: false };
+                    curSub.actions.push(a);
+                }
+                if (!a.desc) {
+                    for (let j = i + 1; j < asLines.length; j++) {
+                        const Lj = asLines[j];
+                        if (Lj.blank) continue;
+                        if (Lj.indent <= L.indent) break;
+                        const ddm = Lj.trimmed.match(/^description:\s*"([^"]*)"/);
+                        if (ddm) { a.desc = ddm[1]; break; }
+                    }
+                }
+            });
+
+            // Resolve deterministic-only actions (invoked via `run`, never offered to the LLM).
+            subagents.forEach(function(s) {
+                s.actions.forEach(function(a) {
+                    if (s._runDet && s._runDet[a.name]) a.deterministicOnly = true;
+                });
+            });
+
+            return { vars: vars, varByName: varByName, subagents: subagents };
+        }
+
+        /* ─── Agent Script: Variables panel ────────────────────── */
+
+        function buildVarsView() {
+            const host = document.getElementById('asVars');
+            const model = buildAgentScriptModel();
+            const subs = model.subagents;
+
+            let h = '<div class="as-panel"><div class="as-panel-head">' +
+                '<div class="as-panel-title">Variables</div>' +
+                '<div class="as-panel-sub">Memory is shared between subagents <em>only</em> through variables. ' +
+                '<span class="as-pill mut">mutable</span> can be written by logic or utility actions; ' +
+                '<span class="as-pill linked">linked</span> is read-only. ' +
+                'A <span class="as-use w">✎ write</span> / <span class="as-use r">read</span> tag shows which subagent touches each one.</div></div>';
+
+            if (model.vars.length === 0) {
+                h += '<div class="as-use-none">No variables declared in this agent.</div></div>';
+                host.innerHTML = h; return;
+            }
+
+            h += '<table class="as-tbl"><thead><tr>' +
+                '<th>Variable</th><th>Kind</th><th>Type</th><th>Default</th><th>Written by</th><th>Read by</th>' +
+                '</tr></thead><tbody>';
+
+            model.vars.forEach(function(v) {
+                const writers = subs.filter(function(s) { return s.writes[v.name]; });
+                const readers = subs.filter(function(s) { return s.reads[v.name]; });
+                const kindPill = v.mutability === 'mutable'
+                    ? '<span class="as-pill mut">mutable</span>'
+                    : '<span class="as-pill linked">' + escapeHtml(v.mutability) + '</span>';
+                h += '<tr>' +
+                    '<td class="as-var-name">' + escapeHtml(v.name) + '</td>' +
+                    '<td>' + kindPill + '</td>' +
+                    '<td><span class="as-type-pill">' + escapeHtml(v.type) + '</span></td>' +
+                    '<td>' + (v.def !== null ? '<code>' + escapeHtml(v.def) + '</code>' : '<span class="as-use-none">—</span>') + '</td>' +
+                    '<td>' + (writers.length ? writers.map(function(s) { return '<span class="as-use w" title="Click to view" data-line="' + s.lineNo + '">✎ ' + escapeHtml(s.name) + '</span>'; }).join('') : '<span class="as-use-none">never written</span>') + '</td>' +
+                    '<td>' + (readers.length ? readers.map(function(s) { return '<span class="as-use r" data-line="' + s.lineNo + '">' + escapeHtml(s.name) + '</span>'; }).join('') : '<span class="as-use-none">never read</span>') + '</td>' +
+                    '</tr>';
+            });
+            h += '</tbody></table></div>';
+            host.innerHTML = h;
+
+            host.querySelectorAll('.as-use[data-line]').forEach(function(el) {
+                el.style.cursor = 'pointer';
+                el.addEventListener('click', function() {
+                    setAgentView('source'); agentExpandAll(); scrollToAgentLine(parseInt(el.dataset.line, 10));
+                });
+            });
+        }
+
+        /* ─── Agent Script: Actions inventory ──────────────────── */
+
+        function buildActionsView() {
+            const host = document.getElementById('asActionsView');
+            const model = buildAgentScriptModel();
+
+            let h = '<div class="as-panel"><div class="as-panel-head">' +
+                '<div class="as-panel-title">Actions</div>' +
+                '<div class="as-panel-sub">Each subagent exposes actions. ' +
+                '<span class="as-pill llm">LLM-callable</span> actions are offered to the model (it decides when via <code>{!@actions.x}</code>); ' +
+                '<span class="as-pill det">deterministic</span> actions run from logic (e.g. <code>run</code> in before/after_reasoning). ' +
+                'A <span class="as-pill gate">gate</span> is an <code>available when</code> precondition that must hold before the action can fire.</div></div>';
+
+            const subs = model.subagents.filter(function(s) { return s.actions.length; });
+            if (subs.length === 0) {
+                h += '<div class="as-use-none">No actions defined in this agent.</div></div>';
+                host.innerHTML = h; return;
+            }
+
+            const KIND_TXT = { set: 'set variables', transition: 'transition', invoke: 'invoke action' };
+            subs.forEach(function(s) {
+                h += '<div style="margin:18px 0 6px;font-weight:700;color:var(--text-primary);font-size:14px;">' +
+                    escapeHtml(s.name) + (s.isStart ? ' <span class="as-pill gate" style="color:var(--accent-indigo);border-color:var(--accent-indigo)">◎ Agent Router</span>' : '') + '</div>';
+                h += '<table class="as-tbl"><thead><tr><th>Action</th><th>Does</th><th>Caller</th><th>Target</th><th>Gate</th></tr></thead><tbody>';
+                s.actions.forEach(function(a) {
+                    const caller = a.deterministicOnly
+                        ? '<span class="as-pill det">deterministic</span>'
+                        : '<span class="as-pill llm">LLM-callable</span>';
+                    const tgt = a.kind === 'transition'
+                        ? '→ <code>' + escapeHtml(a.target) + '</code>'
+                        : '<code>' + escapeHtml(a.target) + '</code>';
+                    h += '<tr>' +
+                        '<td class="as-var-name" data-line="' + a.lineNo + '" style="cursor:pointer">' + escapeHtml(a.name) + '</td>' +
+                        '<td>' + KIND_TXT[a.kind] + (a.desc ? '<div class="as-panel-sub" style="margin-top:2px">' + escapeHtml(a.desc) + '</div>' : '') + '</td>' +
+                        '<td>' + caller + '</td>' +
+                        '<td>' + tgt + '</td>' +
+                        '<td>' + (a.gate ? '<span class="as-pill gate">' + escapeHtml(a.gate) + '</span>' : '<span class="as-use-none">—</span>') + '</td>' +
+                        '</tr>';
+                });
+                h += '</tbody></table>';
+            });
+            h += '</div>';
+            host.innerHTML = h;
+
+            host.querySelectorAll('[data-line]').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    setAgentView('source'); agentExpandAll(); scrollToAgentLine(parseInt(el.dataset.line, 10));
+                });
             });
         }
 
