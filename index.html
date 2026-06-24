@@ -9,7 +9,7 @@
     <meta name="theme-color" content="#0d9488">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
     <script>
         (function() {
@@ -191,7 +191,7 @@
             flex: 1;
             min-width: 0;
             overflow-x: auto;
-            padding: 12px 64px 40px 80px;
+            padding: 12px 40px 40px 48px;
             background: var(--bg-base);
             background-image: radial-gradient(ellipse 80% 60% at 50% -20%, var(--accent-glow-subtle), transparent);
             display: flex;
@@ -199,7 +199,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1440px;
             width: 100%;
         }
 
@@ -524,6 +524,7 @@
             display: flex;
             gap: 12px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         button {
@@ -569,7 +570,8 @@
 
         .search-wrapper {
             position: relative;
-            flex: 1;
+            flex: 1 1 280px;
+            min-width: 260px;
             max-width: 420px;
         }
 
@@ -1073,7 +1075,7 @@
             padding: 16px 0;
             overflow-x: auto;
             box-shadow: var(--shadow-md);
-            font-family: 'Source Code Pro', 'Fira Code', monospace;
+            font-family: 'JetBrains Mono', 'Source Code Pro', 'Fira Code', monospace;
             font-size: 13.5px;
             line-height: 1.65;
         }
@@ -3259,9 +3261,18 @@
 
         searchInput.addEventListener('input', function() {
             clearTimeout(searchDebounceTimer);
+            var q = searchInput.value.trim();
+            // Clear immediately when emptied; otherwise wait until typing
+            // settles and there are at least 2 chars, so single keystrokes
+            // don't churn the whole document.
+            if (q.length === 0) {
+                performSearch('');
+                return;
+            }
+            if (q.length < 2) return;
             searchDebounceTimer = setTimeout(function() {
                 performSearch(searchInput.value.trim());
-            }, 250);
+            }, 350);
         });
 
         searchInput.addEventListener('keydown', function(e) {
