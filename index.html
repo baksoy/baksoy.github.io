@@ -831,6 +831,10 @@
             opacity: 0.3;
         }
 
+        .as-line.search-match {
+            background-color: var(--search-match-bg);
+        }
+
         /* ─── Fold Level Buttons ───────────────────────────────── */
 
         .fold-level-group {
@@ -1277,6 +1281,18 @@
         body.as-actions-active .as-controls,
         body.as-guide-active .as-controls { display: none; }
 
+        /* Search applies to text views only: JSON tree and Agent Script Source.
+           Hide it in the Flow / Variables / Actions / Guide panels, which have
+           no searchable source text. */
+        body.as-flow-active .search-wrapper,
+        body.as-flow-active .search-nav,
+        body.as-vars-active .search-wrapper,
+        body.as-vars-active .search-nav,
+        body.as-actions-active .search-wrapper,
+        body.as-actions-active .search-nav,
+        body.as-guide-active .search-wrapper,
+        body.as-guide-active .search-nav { display: none !important; }
+
         .as-panel {
             background: var(--bg-surface);
             border: 1px solid var(--border-default);
@@ -1580,7 +1596,7 @@
 
 
                 <div class="controls">
-                    <div class="search-wrapper json-only">
+                    <div class="search-wrapper">
                         <span class="search-icon">
                             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8"/>
@@ -1591,7 +1607,7 @@
                         <span class="search-info" id="searchInfo"></span>
                         <button class="search-clear" id="searchClear" onclick="clearSearch()">×</button>
                     </div>
-                    <div class="search-nav json-only" id="searchNav">
+                    <div class="search-nav" id="searchNav">
                         <button onclick="navigateMatch(-1)" title="Previous match (Shift+Enter)">▲</button>
                         <button onclick="navigateMatch(1)" title="Next match (Enter)">▼</button>
                     </div>
@@ -1905,6 +1921,7 @@
             container.innerHTML = '';
             container.appendChild(buildTree(data, true, 0));
             clearActiveLevelBtn();
+            if (typeof updateSearchPlaceholder === 'function') updateSearchPlaceholder();
         }
 
         function buildTree(data, isRoot, depth) {
@@ -2287,8 +2304,11 @@
             });
 
             // Pass 2: a line has children if the next non-blank line is deeper.
+            // Blank lines are never fold parents — otherwise they'd render a
+            // stray ▸ arrow and act like collapsible headers.
             asLines.forEach(function(L, i) {
                 L.hasChildren = false;
+                if (L.blank) return;
                 for (let j = i + 1; j < asLines.length; j++) {
                     if (asLines[j].blank) continue;
                     L.hasChildren = asLines[j].indent > L.indent;
@@ -2462,9 +2482,12 @@
         }
 
         function agentCollapseAll() {
+            // Show only top-level, non-blank lines (section + agent headers).
+            // Blank lines have indent 0, so an `indent > 0` test would leave
+            // their gaps behind; hide them explicitly.
             asLines.forEach(function(L) {
                 if (L.foldEl) L.foldEl.classList.add('collapsed');
-                if (L.el) L.el.classList.toggle('hidden', L.indent > 0);
+                if (L.el) L.el.classList.toggle('hidden', L.blank || L.indent > 0);
             });
         }
 
@@ -2493,6 +2516,10 @@
             else if (v === 'vars') buildVarsView();
             else if (v === 'actions') buildActionsView();
             else if (v === 'guide') buildGuideView();
+            // Search is scoped to the active text view — reset stale highlights
+            // when switching views and keep the placeholder in step.
+            if (typeof clearSearch === 'function') clearSearch();
+            updateSearchPlaceholder();
         }
 
         /* ─── Agent Script: Flow view (transit map) ────────────── */
@@ -3209,11 +3236,26 @@
         let currentMatchIndex = -1;
         let searchDebounceTimer = null;
         let originalTexts = new Map();
+        // Agent Script Source search restores by innerHTML so token highlighting
+        // survives — keyed by the .as-code element, value is its original HTML.
+        let agentOriginalHTML = new Map();
+
+        // Search runs against the Agent Script source only when that text view
+        // is the active one; otherwise it walks the JSON tree.
+        function isAgentSourceSearch() {
+            return document.body.classList.contains('mode-agentscript') && agentView === 'source';
+        }
 
         var searchInput = document.getElementById('searchInput');
         var searchInfo = document.getElementById('searchInfo');
         var searchClear = document.getElementById('searchClear');
         var searchNav = document.getElementById('searchNav');
+
+        function updateSearchPlaceholder() {
+            searchInput.placeholder = isAgentSourceSearch()
+                ? 'Search the source… e.g. “transition to” (⌘F)'
+                : 'Search keys and values… (⌘F)';
+        }
 
         searchInput.addEventListener('input', function() {
             clearTimeout(searchDebounceTimer);
@@ -3237,6 +3279,10 @@
 
         document.addEventListener('keydown', function(e) {
             if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+                // Only hijack ⌘F where our search box is actually shown (JSON
+                // tree + Agent Script Source). In the visual panels it's hidden,
+                // so let the browser's native find run instead.
+                if (getComputedStyle(searchInput.closest('.search-wrapper')).display === 'none') return;
                 e.preventDefault();
                 searchInput.focus();
                 searchInput.select();
@@ -3244,6 +3290,10 @@
         });
 
         function performSearch(query) {
+            if (isAgentSourceSearch()) {
+                performAgentSearch(query);
+                return;
+            }
             restoreOriginalTexts();
             searchMatches = [];
             currentMatchIndex = -1;
@@ -3329,6 +3379,98 @@
             originalTexts.clear();
         }
 
+        /* ─── Agent Script Source search ───────────────────────────
+           Walks the text nodes inside each .as-code span and wraps
+           matches in .search-highlight, reusing the same match state
+           and nav as JSON search. Token spans (e.g. "transition to")
+           hold a single text node, so multi-word keywords match. */
+        function performAgentSearch(query) {
+            restoreAgentTexts();
+            searchMatches = [];
+            currentMatchIndex = -1;
+            searchInfo.classList.remove('no-matches');
+
+            document.querySelectorAll('#asSource .as-line').forEach(function(line) {
+                line.classList.remove('search-match');
+            });
+
+            if (!query) {
+                searchInfo.style.display = 'none';
+                searchClear.style.display = 'none';
+                searchNav.style.display = 'none';
+                return;
+            }
+
+            searchClear.style.display = 'block';
+
+            // Reveal every line so matches inside collapsed folds are visible.
+            agentExpandAll();
+
+            var lowerQuery = query.toLowerCase();
+            document.querySelectorAll('#asSource .as-code').forEach(function(code) {
+                if (code.textContent.toLowerCase().indexOf(lowerQuery) === -1) return;
+                if (!agentOriginalHTML.has(code)) agentOriginalHTML.set(code, code.innerHTML);
+                if (highlightAgentTextNodes(code, lowerQuery, query.length)) {
+                    var line = code.closest('.as-line');
+                    if (line) line.classList.add('search-match');
+                }
+            });
+
+            if (searchMatches.length > 0) {
+                searchInfo.style.display = 'block';
+                searchNav.style.display = 'flex';
+                currentMatchIndex = 0;
+                updateMatchInfo();
+                searchMatches[0].classList.add('current');
+                searchMatches[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                searchInfo.style.display = 'block';
+                searchInfo.textContent = 'No matches';
+                searchInfo.classList.add('no-matches');
+                searchNav.style.display = 'none';
+            }
+        }
+
+        function highlightAgentTextNodes(root, lowerQuery, qlen) {
+            // Snapshot text nodes first — mutating during the walk invalidates it.
+            var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+            var textNodes = [];
+            var n;
+            while ((n = walker.nextNode())) textNodes.push(n);
+
+            var found = false;
+            textNodes.forEach(function(node) {
+                var text = node.nodeValue;
+                var lower = text.toLowerCase();
+                var idx = lower.indexOf(lowerQuery);
+                if (idx === -1) return;
+                found = true;
+
+                var frag = document.createDocumentFragment();
+                var pos = 0;
+                while (idx !== -1) {
+                    if (idx > pos) frag.appendChild(document.createTextNode(text.substring(pos, idx)));
+                    var hl = document.createElement('span');
+                    hl.className = 'search-highlight';
+                    hl.textContent = text.substring(idx, idx + qlen);
+                    frag.appendChild(hl);
+                    searchMatches.push(hl);
+                    pos = idx + qlen;
+                    idx = lower.indexOf(lowerQuery, pos);
+                }
+                if (pos < text.length) frag.appendChild(document.createTextNode(text.substring(pos)));
+                node.parentNode.replaceChild(frag, node);
+            });
+            return found;
+        }
+
+        function restoreAgentTexts() {
+            agentOriginalHTML.forEach(function(html, code) {
+                code.innerHTML = html;
+            });
+            agentOriginalHTML.clear();
+        }
+
         function expandAncestors(element) {
             var node = element.parentElement;
             while (node && node.id !== 'jsonTree') {
@@ -3359,17 +3501,23 @@
         }
 
         function clearSearch() {
+            var wasAgent = agentOriginalHTML.size > 0 || isAgentSourceSearch();
             searchInput.value = '';
             restoreOriginalTexts();
+            restoreAgentTexts();
             searchMatches = [];
             currentMatchIndex = -1;
             searchInfo.style.display = 'none';
+            searchInfo.classList.remove('no-matches');
             searchClear.style.display = 'none';
             searchNav.style.display = 'none';
             document.querySelectorAll('.json-line').forEach(function(line) {
                 line.classList.remove('search-match', 'search-dimmed');
             });
-            collapseAll();
+            document.querySelectorAll('#asSource .as-line.search-match').forEach(function(line) {
+                line.classList.remove('search-match');
+            });
+            if (!wasAgent) collapseAll();
         }
 
         document.getElementById('themeToggle').addEventListener('click', function() {
